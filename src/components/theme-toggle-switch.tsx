@@ -48,13 +48,13 @@ export function ThemeToggleSwitch() {
           // Thumb width: w-6 (24px).
           // Max translation distance = 56px - 24px = 32px.
           // 32px is 2rem, so 'translate-x-8' (since Tailwind's default spacing unit is 0.25rem).
-          isDarkMode ? 'translate-x-8' : 'translate-x-0'
+          isDarkMode ? 'translate-x-[calc(3.75rem-1.5rem-0.25rem-0.25rem)]' : 'translate-x-0' // Adjusted for precise movement within bounds. 3.75rem (parent) - 1.5rem (thumb) - 0.125rem*2 (paddings if any on track for thumb visual)
         )}
       >
         {/* Sun Icon - Visible in light mode */}
         <Sun
           className={cn(
-            'h-4 w-4 text-[hsl(var(--ctp-yellow))] transition-opacity duration-200 ease-in-out',
+            'h-4 w-4 text-[#FFEB3B] transition-opacity duration-200 ease-in-out', // Changed color to #FFEB3B for better visibility
             isDarkMode ? 'opacity-0' : 'opacity-100'
           )}
         />
@@ -69,3 +69,4 @@ export function ThemeToggleSwitch() {
     </button>
   );
 }
+
