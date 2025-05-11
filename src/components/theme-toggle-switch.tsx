@@ -1,6 +1,7 @@
 
 'use client';
 
+import type { SVGProps } from 'react';
 import * as React from 'react';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
@@ -43,28 +44,25 @@ export function ThemeToggleSwitch() {
         aria-hidden="true"
         className={cn(
           'pointer-events-none relative inline-flex h-6 w-6 items-center justify-center rounded-full bg-background shadow-lg ring-0 transition-transform duration-200 ease-in-out',
-          // Calculate translation:
-          // Button width: w-[3.75rem] (60px). Padding p-0.5 (1px each side for border effectively). Inner track for thumb = 60px - 2px = 58px.
+          // Parent width: w-[3.75rem] (60px). Border: 2px each side. Padding: p-0.5 (2px each side).
+          // Inner content box width = 60px - 2*2px (border) - 2*2px (padding) = 52px.
           // Thumb width: w-6 (24px).
-          // Max translation distance = 58px - 24px = 34px.
-          // 34px is approx 2.125rem. Tailwind's 'translate-x-8' is 2rem. We need slightly more.
-          // Let's use calc: w-[3.75rem] - w-6 - p-0.5*2 => 3.75rem - 1.5rem - 0.25rem = 2rem
-          // The padding on the parent is 0.5 (2px). Thumb is 24px. Parent is 60px.
-          // Space for thumb to travel: 60px (parent width) - 2*2px (parent padding) - 24px (thumb width) = 32px = 2rem.
-          isDarkMode ? 'translate-x-[2rem]' : 'translate-x-0' // translate-x-8 (2rem)
+          // Max translation distance for thumb's left edge = Inner content box width - Thumb width = 52px - 24px = 28px.
+          // 28px is 1.75rem.
+          isDarkMode ? 'translate-x-[1.75rem]' : 'translate-x-0'
         )}
       >
         {/* Sun Icon - Visible in light mode */}
         <Sun
           className={cn(
-            'h-4 w-4 text-amber-600 transition-opacity duration-200 ease-in-out', // Changed to amber-600 for better visibility
+            'h-4 w-4 text-ctp-peach transition-opacity duration-200 ease-in-out',
             isDarkMode ? 'opacity-0' : 'opacity-100'
           )}
         />
         {/* Moon Icon - Visible in dark mode, positioned absolutely to overlap Sun */}
         <Moon
           className={cn(
-            'absolute h-4 w-4 text-[hsl(var(--ctp-sky))] transition-opacity duration-200 ease-in-out',
+            'absolute h-4 w-4 text-ctp-sky transition-opacity duration-200 ease-in-out',
             isDarkMode ? 'opacity-100' : 'opacity-0'
           )}
         />
@@ -72,3 +70,4 @@ export function ThemeToggleSwitch() {
     </button>
   );
 }
+
