@@ -2,23 +2,10 @@ import type { SVGProps } from 'react';
 
 export function FridgeFeastLogo(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...props}
-    >
-      <path d="M20 14.5A13.56 13.56 0 0 1 12 22a13.56 13.56 0 0 1-8-7.5c0-4.05 3.58-8.55 8-8.55s8 4.5 8 8.55Z" />
-      <path d="M12 2v5" />
-      <path d="m10.5 7 1.5-2.5 1.5 2.5" />
-      <path d="M6.83 8.5A13.56 13.56 0 0 0 4 14.5" />
-      <path d="M17.17 8.5A13.56 13.56 0 0 1 20 14.5" />
+    <svg xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor" {...props}>
+      <path d="M370-409h60v-183h-60v183Zm-160-50q-49-24-79.5-69T100-627q0-72.49 50.5-122.74Q201-800 273.41-800q11.59 0 23.08 1.71 11.48 1.72 22.51 4.29l8 2 4-7q23-40 63-60.5t86-20.5q46 0 86 20.5t63 60.5l4 7 8-2q11-3 22.46-4.5 11.47-1.5 23.89-1.5 71.65 0 122.15 50.26Q860-699.49 860-627q0 54-30.5 99T750-459v215H210v-215Zm320 50h60v-183h-60v183ZM270-305h420v-191l40-20q32-16 52-45.5t20-64.5q0-48-36-80t-85-32q-9 0-18 1.5t-18 3.5l-39 11-28-46q-16-26-41.98-39-25.98-13-56-13T424-807q-26 13-42 39l-28 46-40-11q-9-2-17.84-3.5-8.85-1.5-18.16-1.5-49 0-84.5 32.5T158-625q0 35 20 65t52 45l40 19v191Zm-60 61h60v104h420v-104h60v164H210v-164Zm270-61Z" />
     </svg>
   );
 }
