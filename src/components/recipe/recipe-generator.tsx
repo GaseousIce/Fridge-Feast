@@ -7,6 +7,8 @@ import { z } from "zod";
 import { generateRecipe, type GenerateRecipeOutput } from "@/ai/flows/generate-recipe";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input"; // Import Input component
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"; // Import Select components
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -17,6 +19,9 @@ const formSchema = z.object({
   ingredients: z.string().min(3, {
     message: "Please list at least one ingredient.",
   }),
+  dietaryRestrictions: z.string().optional(),
+  cuisine: z.string().optional(),
+  difficulty: z.string().optional(),
 });
 
 export function RecipeGenerator() {
@@ -28,6 +33,9 @@ export function RecipeGenerator() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       ingredients: "",
+      dietaryRestrictions: "",
+      cuisine: "",
+      difficulty: "",
     },
   });
 
@@ -36,7 +44,12 @@ export function RecipeGenerator() {
     setError(null);
     setRecipe(null);
     try {
-      const result = await generateRecipe({ ingredients: values.ingredients });
+      const result = await generateRecipe({
+        ingredients: values.ingredients,
+        dietaryRestrictions: values.dietaryRestrictions || undefined, // Pass undefined if empty string
+        cuisine: values.cuisine || undefined,
+        difficulty: values.difficulty || undefined,
+      });
       setRecipe(result);
     } catch (e) {
       console.error(e);
@@ -76,6 +89,60 @@ export function RecipeGenerator() {
                   </FormItem>
                 )}
               />
+
+              {/* New Fields for Customization */}
+              <FormField
+                control={form.control}
+                name="dietaryRestrictions"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-lg">Dietary Restrictions (Optional)</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., vegetarian, gluten-free" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="cuisine"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-lg">Cuisine (Optional)</FormLabel>
+                    <FormControl>
+                       <Input placeholder="e.g., Italian, Mexican, Asian" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="difficulty"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-lg">Difficulty (Optional)</FormLabel>
+                    <FormControl>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select difficulty" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="easy">Easy</SelectItem>
+                          <SelectItem value="medium">Medium</SelectItem>
+                          <SelectItem value="hard">Hard</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* End New Fields */}
+
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? (
                   <>

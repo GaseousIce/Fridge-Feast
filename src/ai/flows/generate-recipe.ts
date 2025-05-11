@@ -14,6 +14,9 @@ const GenerateRecipeInputSchema = z.object({
   ingredients: z
     .string()
     .describe('A comma separated list of ingredients available.'),
+  dietaryRestrictions: z.string().optional().describe('Optional dietary restrictions (e.g., vegetarian, vegan, gluten-free).'),
+  cuisine: z.string().optional().describe('Optional preferred cuisine (e.g., Italian, Mexican, Asian).'),
+  difficulty: z.string().optional().describe('Optional preferred difficulty level (e.g., easy, medium, hard).'),
 });
 export type GenerateRecipeInput = z.infer<typeof GenerateRecipeInputSchema>;
 
@@ -37,6 +40,9 @@ const prompt = ai.definePrompt({
 You will generate a recipe based on the ingredients available.
 
 Ingredients: {{{ingredients}}}
+{{#if dietaryRestrictions}}Dietary Restrictions: {{{dietaryRestrictions}}}{{/if}}
+{{#if cuisine}}Cuisine: {{{cuisine}}}{{/if}}
+{{#if difficulty}}Difficulty: {{{difficulty}}}{{/if}}
 
 Recipe: {
   "recipeName": "",

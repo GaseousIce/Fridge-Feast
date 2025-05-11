@@ -8,7 +8,7 @@ body {
 
 @layer base {
   :root {
-    /* Catppuccin Latte */
+    /* Catppuccin Latte (Light Mode) */
     --ctp-rosewater: 200 69% 95%;
     --ctp-flamingo: 0 50% 94%;
     --ctp-pink: 316 69% 93%;
@@ -22,7 +22,7 @@ body {
     --ctp-sky: 188 50% 70%;
     --ctp-sapphire: 199 50% 69%;
     --ctp-blue: 217 89% 76%;
-    --ctp-lavender: 248 69% 85%;
+    --ctp-lavender: 248 69% 65%; /* Adjusted lightness for light mode */
     --ctp-text: 220 10% 31%;
     --ctp-subtext1: 222 13% 42%;
     --ctp-subtext0: 223 15% 52%;
@@ -45,8 +45,8 @@ body {
     --popover: var(--ctp-surface0); /* Latte surface0 */
     --popover-foreground: var(--ctp-text); /* Latte text */
 
-    --primary: var(--ctp-blue); /* Latte blue for primary */
-    --primary-foreground: var(--ctp-crust); /* Latte crust */
+    --primary: var(--ctp-lavender); /* Latte lavender for primary */
+    --primary-foreground: var(--ctp-text); /* Latte text */
 
     --secondary: var(--ctp-surface1); /* Latte surface1 */
     --secondary-foreground: var(--ctp-text); /* Latte text */
@@ -83,7 +83,7 @@ body {
   }
 
   .dark {
-    /* Catppuccin Mocha */
+    /* Catppuccin Mocha (Dark Mode) */
     --ctp-rosewater: 333 69% 95%;
     --ctp-flamingo: 340 50% 94%;
     --ctp-pink: 316 69% 93%;
@@ -97,7 +97,7 @@ body {
     --ctp-sky: 188 50% 70%;
     --ctp-sapphire: 199 50% 69%;
     --ctp-blue: 217 89% 76%;
-    --ctp-lavender: 248 69% 85%;
+    --ctp-lavender: 248 69% 75%; /* Adjusted lightness for dark mode */
     --ctp-text: 220 14% 90%;
     --ctp-subtext1: 220 18% 82%;
     --ctp-subtext0: 220 20% 72%;
@@ -120,8 +120,8 @@ body {
     --popover: var(--ctp-surface0); /* Mocha surface0 */
     --popover-foreground: var(--ctp-text); /* Mocha text */
 
-    --primary: var(--ctp-blue); /* Mocha blue for primary */
-    --primary-foreground: var(--ctp-crust); /* Mocha crust */
+    --primary: var(--ctp-lavender); /* Mocha lavender for primary */
+    --primary-foreground: var(--ctp-text); /* Mocha text */
 
     --secondary: var(--ctp-surface1); /* Mocha surface1 */
     --secondary-foreground: var(--ctp-text); /* Mocha text */
