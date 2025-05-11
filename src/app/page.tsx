@@ -1,9 +1,13 @@
 import { RecipeGenerator } from "@/components/recipe/recipe-generator";
 import { FridgeFeastLogo } from "@/components/icons/fridge-feast-logo";
+import { ModeToggle } from "@/components/mode-toggle";
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center min-h-screen bg-background text-foreground p-4 sm:p-8">
+    <div className="relative flex flex-col items-center min-h-screen bg-background text-foreground p-4 sm:p-8">
+      <div className="absolute top-4 right-4">
+        <ModeToggle />
+      </div>
       <header className="flex flex-col items-center mb-10 text-center">
         <FridgeFeastLogo className="h-16 w-16 mb-4 text-primary" />
         <h1 className="text-5xl font-bold tracking-tight text-primary">

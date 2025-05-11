@@ -8,95 +8,151 @@ body {
 
 @layer base {
   :root {
-    --background: 0 0% 94%; /* Light Gray #F0F0F0 */
-    --foreground: 224 71.4% 4.1%; /* Dark Blueish Gray for text */
+    /* Catppuccin Latte */
+    --ctp-rosewater: 200 69% 95%;
+    --ctp-flamingo: 0 50% 94%;
+    --ctp-pink: 316 69% 93%;
+    --ctp-mauve: 266 69% 81%;
+    --ctp-red: 347 70% 73%;
+    --ctp-maroon: 350 50% 77%;
+    --ctp-peach: 26 89% 75%;
+    --ctp-yellow: 48 89% 77%;
+    --ctp-green: 114 50% 77%;
+    --ctp-teal: 168 50% 71%;
+    --ctp-sky: 188 50% 70%;
+    --ctp-sapphire: 199 50% 69%;
+    --ctp-blue: 217 89% 76%;
+    --ctp-lavender: 248 69% 85%;
+    --ctp-text: 220 10% 31%;
+    --ctp-subtext1: 222 13% 42%;
+    --ctp-subtext0: 223 15% 52%;
+    --ctp-overlay2: 224 16% 63%;
+    --ctp-overlay1: 225 17% 71%;
+    --ctp-overlay0: 226 18% 78%;
+    --ctp-surface2: 227 19% 85%;
+    --ctp-surface1: 228 20% 90%;
+    --ctp-surface0: 229 21% 94%;
+    --ctp-base: 229 27% 96%;
+    --ctp-mantle: 229 29% 95%;
+    --ctp-crust: 230 31% 94%;
 
-    --card: 0 0% 100%; /* White */
-    --card-foreground: 224 71.4% 4.1%;
+    --background: var(--ctp-base); /* Latte base */
+    --foreground: var(--ctp-text); /* Latte text */
 
-    --popover: 0 0% 100%; /* White */
-    --popover-foreground: 224 71.4% 4.1%;
+    --card: var(--ctp-surface0); /* Latte surface0 */
+    --card-foreground: var(--ctp-text); /* Latte text */
 
-    --primary: 120 39% 50%; /* Green #4CAF50 */
-    --primary-foreground: 0 0% 100%; /* White */
+    --popover: var(--ctp-surface0); /* Latte surface0 */
+    --popover-foreground: var(--ctp-text); /* Latte text */
 
-    --secondary: 0 0% 96.1%; /* Very light gray */
-    --secondary-foreground: 224 71.4% 4.1%;
+    --primary: var(--ctp-blue); /* Latte blue for primary */
+    --primary-foreground: var(--ctp-crust); /* Latte crust */
 
-    --muted: 0 0% 90%; /* Muted gray */
-    --muted-foreground: 222 47.4% 45.1%; /* Muted text color */
+    --secondary: var(--ctp-surface1); /* Latte surface1 */
+    --secondary-foreground: var(--ctp-text); /* Latte text */
 
-    --accent: 54 99% 61%; /* Yellow #FFEB3B */
-    --accent-foreground: 60 100% 10%; /* Dark text for yellow accent */
+    --muted: var(--ctp-surface2); /* Latte surface2 */
+    --muted-foreground: var(--ctp-subtext0); /* Latte subtext0 */
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
+    --accent: var(--ctp-mauve); /* Latte mauve for accent */
+    --accent-foreground: var(--ctp-crust); /* Latte crust */
 
-    --border: 0 0% 89.8%; /* Border color */
-    --input: 0 0% 100%; /* Input background - white */
-    --ring: 120 39% 50%; /* Green for focus ring */
+    --destructive: var(--ctp-red); /* Latte red */
+    --destructive-foreground: var(--ctp-crust); /* Latte crust */
+
+    --border: var(--ctp-surface1); /* Latte surface1 */
+    --input: var(--ctp-surface0); /* Latte surface0 */
+    --ring: var(--ctp-blue); /* Latte blue for ring */
 
     --radius: 0.5rem;
 
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
+    --chart-1: var(--ctp-red);
+    --chart-2: var(--ctp-blue);
+    --chart-3: var(--ctp-green);
+    --chart-4: var(--ctp-yellow);
+    --chart-5: var(--ctp-pink);
     
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: var(--ctp-crust);
+    --sidebar-foreground: var(--ctp-text);
+    --sidebar-primary: var(--ctp-blue);
+    --sidebar-primary-foreground: var(--ctp-crust);
+    --sidebar-accent: var(--ctp-surface0);
+    --sidebar-accent-foreground: var(--ctp-text);
+    --sidebar-border: var(--ctp-surface1);
+    --sidebar-ring: var(--ctp-blue);
   }
 
   .dark {
-    --background: 224 71.4% 4.1%; 
-    --foreground: 0 0% 94%;
+    /* Catppuccin Mocha */
+    --ctp-rosewater: 333 69% 95%;
+    --ctp-flamingo: 340 50% 94%;
+    --ctp-pink: 316 69% 93%;
+    --ctp-mauve: 266 69% 81%;
+    --ctp-red: 347 70% 73%;
+    --ctp-maroon: 350 50% 77%;
+    --ctp-peach: 26 89% 75%;
+    --ctp-yellow: 48 89% 77%;
+    --ctp-green: 114 50% 77%;
+    --ctp-teal: 168 50% 71%;
+    --ctp-sky: 188 50% 70%;
+    --ctp-sapphire: 199 50% 69%;
+    --ctp-blue: 217 89% 76%;
+    --ctp-lavender: 248 69% 85%;
+    --ctp-text: 220 14% 90%;
+    --ctp-subtext1: 220 18% 82%;
+    --ctp-subtext0: 220 20% 72%;
+    --ctp-overlay2: 220 22% 64%;
+    --ctp-overlay1: 220 24% 55%;
+    --ctp-overlay0: 220 26% 48%;
+    --ctp-surface2: 220 29% 40%;
+    --ctp-surface1: 220 31% 33%;
+    --ctp-surface0: 220 33% 29%;
+    --ctp-base: 220 36% 24%;
+    --ctp-mantle: 220 38% 20%;
+    --ctp-crust: 220 40% 16%;
 
-    --card: 224 71.4% 6.1%; /* Darker card background */
-    --card-foreground: 0 0% 94%;
+    --background: var(--ctp-base); /* Mocha base */
+    --foreground: var(--ctp-text); /* Mocha text */
 
-    --popover: 224 71.4% 6.1%;
-    --popover-foreground: 0 0% 94%;
+    --card: var(--ctp-surface0); /* Mocha surface0 */
+    --card-foreground: var(--ctp-text); /* Mocha text */
 
-    --primary: 120 39% 55%; /* Slightly lighter green for dark mode */
-    --primary-foreground: 0 0% 10%; /* Dark text on green */
+    --popover: var(--ctp-surface0); /* Mocha surface0 */
+    --popover-foreground: var(--ctp-text); /* Mocha text */
 
-    --secondary: 224 71.4% 10.1%; 
-    --secondary-foreground: 0 0% 94%;
+    --primary: var(--ctp-blue); /* Mocha blue for primary */
+    --primary-foreground: var(--ctp-crust); /* Mocha crust */
 
-    --muted: 224 71.4% 10.1%;
-    --muted-foreground: 0 0% 63.9%;
+    --secondary: var(--ctp-surface1); /* Mocha surface1 */
+    --secondary-foreground: var(--ctp-text); /* Mocha text */
 
-    --accent: 54 99% 61%; /* Yellow accent remains bright */
-    --accent-foreground: 60 100% 10%; /* Dark text for yellow accent */
+    --muted: var(--ctp-surface2); /* Mocha surface2 */
+    --muted-foreground: var(--ctp-subtext0); /* Mocha subtext0 */
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
+    --accent: var(--ctp-mauve); /* Mocha mauve for accent */
+    --accent-foreground: var(--ctp-crust); /* Mocha crust */
 
-    --border: 224 71.4% 15.9%; /* Darker border */
-    --input: 224 71.4% 10.1%; /* Darker input background */
-    --ring: 120 39% 55%;
+    --destructive: var(--ctp-red); /* Mocha red */
+    --destructive-foreground: var(--ctp-crust); /* Mocha crust */
 
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    --border: var(--ctp-surface1); /* Mocha surface1 */
+    --input: var(--ctp-surface0); /* Mocha surface0 */
+    --ring: var(--ctp-blue); /* Mocha blue for ring */
 
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --chart-1: var(--ctp-red);
+    --chart-2: var(--ctp-blue);
+    --chart-3: var(--ctp-green);
+    --chart-4: var(--ctp-yellow);
+    --chart-5: var(--ctp-pink);
+
+    --sidebar-background: var(--ctp-crust);
+    --sidebar-foreground: var(--ctp-text);
+    --sidebar-primary: var(--ctp-blue);
+    --sidebar-primary-foreground: var(--ctp-crust);
+    --sidebar-accent: var(--ctp-surface0);
+    --sidebar-accent-foreground: var(--ctp-text);
+    --sidebar-border: var(--ctp-surface1);
+    --sidebar-ring: var(--ctp-blue);
   }
 }
 
