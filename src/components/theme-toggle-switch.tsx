@@ -44,17 +44,20 @@ export function ThemeToggleSwitch() {
         className={cn(
           'pointer-events-none relative inline-flex h-6 w-6 items-center justify-center rounded-full bg-background shadow-lg ring-0 transition-transform duration-200 ease-in-out',
           // Calculate translation:
-          // Button width: w-[3.75rem] (60px). Padding p-0.5 (2px each side). Inner track for thumb = 60px - 4px = 56px.
+          // Button width: w-[3.75rem] (60px). Padding p-0.5 (1px each side for border effectively). Inner track for thumb = 60px - 2px = 58px.
           // Thumb width: w-6 (24px).
-          // Max translation distance = 56px - 24px = 32px.
-          // 32px is 2rem, so 'translate-x-8' (since Tailwind's default spacing unit is 0.25rem).
-          isDarkMode ? 'translate-x-[calc(3.75rem-1.5rem-0.25rem-0.25rem)]' : 'translate-x-0' // Adjusted for precise movement within bounds. 3.75rem (parent) - 1.5rem (thumb) - 0.125rem*2 (paddings if any on track for thumb visual)
+          // Max translation distance = 58px - 24px = 34px.
+          // 34px is approx 2.125rem. Tailwind's 'translate-x-8' is 2rem. We need slightly more.
+          // Let's use calc: w-[3.75rem] - w-6 - p-0.5*2 => 3.75rem - 1.5rem - 0.25rem = 2rem
+          // The padding on the parent is 0.5 (2px). Thumb is 24px. Parent is 60px.
+          // Space for thumb to travel: 60px (parent width) - 2*2px (parent padding) - 24px (thumb width) = 32px = 2rem.
+          isDarkMode ? 'translate-x-[2rem]' : 'translate-x-0' // translate-x-8 (2rem)
         )}
       >
         {/* Sun Icon - Visible in light mode */}
         <Sun
           className={cn(
-            'h-4 w-4 text-[#FFEB3B] transition-opacity duration-200 ease-in-out', // Changed color to #FFEB3B for better visibility
+            'h-4 w-4 text-amber-600 transition-opacity duration-200 ease-in-out', // Changed to amber-600 for better visibility
             isDarkMode ? 'opacity-0' : 'opacity-100'
           )}
         />
@@ -69,4 +72,3 @@ export function ThemeToggleSwitch() {
     </button>
   );
 }
-
