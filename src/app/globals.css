@@ -46,7 +46,7 @@ body {
     --popover-foreground: var(--ctp-text); /* Latte text */
 
     --primary: var(--ctp-lavender); /* Latte lavender for primary */
-    --primary-foreground: var(--ctp-text); /* Latte text */
+    --primary-foreground: var(--ctp-crust); /* Latte crust (light text for light mode primary button) */
 
     --secondary: var(--ctp-surface1); /* Latte surface1 */
     --secondary-foreground: var(--ctp-text); /* Latte text */
@@ -121,7 +121,7 @@ body {
     --popover-foreground: var(--ctp-text); /* Mocha text */
 
     --primary: var(--ctp-lavender); /* Mocha lavender for primary */
-    --primary-foreground: var(--ctp-text); /* Mocha text */
+    --primary-foreground: var(--ctp-crust); /* Mocha crust (dark text for dark mode primary button) */
 
     --secondary: var(--ctp-surface1); /* Mocha surface1 */
     --secondary-foreground: var(--ctp-text); /* Mocha text */
