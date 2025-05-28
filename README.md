@@ -1,6 +1,6 @@
 # Fridge Feast
 
-Fridge Feast is a NextJS application built within Firebase Studio that helps you generate delicious recipes based on the ingredients you have on hand. Say goodbye to food waste and hello to creative cooking!
+Fridge Feast is a Next.js application that helps you generate delicious recipes based on the ingredients you have on hand. Say goodbye to food waste and hello to creativity in your kitchen!
 
 ## Core Features
 
@@ -11,9 +11,13 @@ Fridge Feast is a NextJS application built within Firebase Studio that helps you
 
 ## Getting Started
 
-This project is a NextJS starter running in Firebase Studio.
+This project is a Next.js starter.
 
-1.  **Clone the repository:** (Assuming the user has already cloned it, as they are in the local codebase)
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/GaseousIce/Fridge-Feast.git
+    cd Fridge-Feast
+    ```
 2.  **Install dependencies:**
     ```bash
     npm install
@@ -37,4 +41,5 @@ The AI recipe generation logic can be found in `src/ai/flows/generate-recipe.ts`
 
 ## Feedback
 
-Send feedback
+Have feedback or suggestions?  
+Feel free to [open an issue](https://github.com/GaseousIce/Fridge-Feast/issues) or start a [discussion](https://github.com/GaseousIce/Fridge-Feast/discussions) on GitHub!
