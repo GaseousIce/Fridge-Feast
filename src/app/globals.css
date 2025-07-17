@@ -159,10 +159,9 @@ body {
 @layer base {
   * {
     @apply border-border;
-    @apply transition-colors duration-300 ease-in-out; /* Apply to all elements for smooth theme changes */
   }
   body {
     @apply bg-background text-foreground;
-    /* transition-colors is now handled by the * selector above */
+    @apply transition-colors duration-300 ease-in-out;
   }
 }
