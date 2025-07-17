@@ -34,7 +34,8 @@ export function ThemeToggleSwitch() {
       aria-checked={isDarkMode}
       aria-label="Toggle theme"
       className={cn(
-        'relative inline-flex h-8 w-[3.75rem] flex-shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent p-0.5 transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+        'relative inline-flex h-8 w-[3.75rem] flex-shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent p-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+        'transition-colors duration-300 ease-in-out',
         isDarkMode ? 'bg-primary' : 'bg-muted' // Track color
       )}
     >
@@ -43,7 +44,8 @@ export function ThemeToggleSwitch() {
       <span
         aria-hidden="true"
         className={cn(
-          'pointer-events-none relative inline-flex h-6 w-6 items-center justify-center rounded-full bg-background shadow-lg ring-0 transition-transform duration-200 ease-in-out',
+          'pointer-events-none relative inline-flex h-6 w-6 items-center justify-center rounded-full bg-background shadow-lg ring-0',
+          'transition-transform duration-300 ease-in-out',
           // Parent width: w-[3.75rem] (60px). Border: 2px each side. Padding: p-0.5 (2px each side).
           // Inner content box width = 60px - 2*2px (border) - 2*2px (padding) = 52px.
           // Thumb width: w-6 (24px).
@@ -55,14 +57,16 @@ export function ThemeToggleSwitch() {
         {/* Sun Icon - Visible in light mode */}
         <Sun
           className={cn(
-            'h-4 w-4 text-ctp-peach transition-opacity duration-200 ease-in-out',
+            'h-4 w-4 text-ctp-peach',
+            'transition-opacity duration-300 ease-in-out',
             isDarkMode ? 'opacity-0' : 'opacity-100'
           )}
         />
         {/* Moon Icon - Visible in dark mode, positioned absolutely to overlap Sun */}
         <Moon
           className={cn(
-            'absolute h-4 w-4 text-ctp-sky transition-opacity duration-200 ease-in-out',
+            'absolute h-4 w-4 text-ctp-sky',
+            'transition-opacity duration-300 ease-in-out',
             isDarkMode ? 'opacity-100' : 'opacity-0'
           )}
         />
