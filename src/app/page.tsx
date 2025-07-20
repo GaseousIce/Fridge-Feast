@@ -1,12 +1,12 @@
 import { RecipeGenerator } from "@/components/recipe/recipe-generator";
 import { FridgeFeastLogo } from "@/components/icons/fridge-feast-logo"; // Changed import back to FridgeFeastLogo
-import { ThemeToggleSwitch } from "@/components/theme-toggle-switch";
+import { AnimatedThemeToggle } from "@/components/animated-theme-toggle";
 
 export default function Home() {
   return (
     <div className="relative flex flex-col items-center min-h-screen bg-background text-foreground p-4 sm:p-8">
       <div className="absolute top-4 right-4">
-        <ThemeToggleSwitch />
+        <AnimatedThemeToggle />
       </div>
       <header className="flex flex-col items-center mb-10 text-center">
         <FridgeFeastLogo className="h-16 w-16 mb-4 text-primary" /> {/* Using FridgeFeastLogo which now contains the chef hat SVG */}
