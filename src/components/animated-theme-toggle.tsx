@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { useTheme } from 'next-themes';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const anime = require('animejs');
 
 export function AnimatedThemeToggle() {
@@ -14,7 +15,9 @@ export function AnimatedThemeToggle() {
   }, []);
 
   const createSwwwCenterTransition = (centerX: number, centerY: number, isDarkToLight: boolean) => {
-    console.log('🎨 Starting swww transition:', { centerX, centerY, isDarkToLight });
+    if (process.env.NODE_ENV === 'development') {
+      console.log('🎨 Starting swww transition:', { centerX, centerY, isDarkToLight });
+    }
     
     // Add body class to prevent interactions during transition
     document.body.classList.add('theme-transitioning');
@@ -23,11 +26,13 @@ export function AnimatedThemeToggle() {
     const targetBackground = isDarkToLight ? '#eff1f5' : '#1e1e2e';
     const targetForeground = isDarkToLight ? '#4c4f69' : '#cdd6f4';
     
-    console.log('🎨 Using target colors:', { 
-      targetBackground, 
-      targetForeground,
-      direction: isDarkToLight ? 'dark → light' : 'light → dark'
-    });
+    if (process.env.NODE_ENV === 'development') {
+      console.log('🎨 Using target colors:', { 
+        targetBackground, 
+        targetForeground,
+        direction: isDarkToLight ? 'dark → light' : 'light → dark'
+      });
+    }
     
     // Create overlay that will be the "new" theme background
     const overlay = document.createElement('div');
@@ -51,13 +56,17 @@ export function AnimatedThemeToggle() {
       Math.pow(Math.max(centerY, window.innerHeight - centerY), 2)
     );
 
-    console.log('🎨 Max radius:', maxRadius);
+    if (process.env.NODE_ENV === 'development') {
+      console.log('🎨 Max radius:', maxRadius);
+    }
 
     // Set initial clip-path as a small circle at the click point
     overlay.style.clipPath = `circle(0px at ${centerX}px ${centerY}px)`;
     
     document.body.appendChild(overlay);
-    console.log('🎨 Overlay added to DOM');
+    if (process.env.NODE_ENV === 'development') {
+      console.log('🎨 Overlay added to DOM');
+    }
 
     // Start the expansion animation
     requestAnimationFrame(() => {
@@ -69,33 +78,45 @@ export function AnimatedThemeToggle() {
   };
 
   const toggleTheme = () => {
-    console.log('🌙 Theme toggle clicked!');
-    console.log('🌙 Current resolvedTheme:', resolvedTheme);
-    console.log('🌙 Document classList:', document.documentElement.classList.toString());
+    if (process.env.NODE_ENV === 'development') {
+      console.log('🌙 Theme toggle clicked!');
+      console.log('🌙 Current resolvedTheme:', resolvedTheme);
+      console.log('🌙 Document classList:', document.documentElement.classList.toString());
+    }
     
     const isDarkMode = resolvedTheme === 'dark';
     const newTheme = isDarkMode ? 'light' : 'dark';
-    console.log('🌙 Current theme:', resolvedTheme, '→ New theme:', newTheme);
-    console.log('🌙 isDarkMode:', isDarkMode);
+    if (process.env.NODE_ENV === 'development') {
+      console.log('🌙 Current theme:', resolvedTheme, '→ New theme:', newTheme);
+      console.log('🌙 isDarkMode:', isDarkMode);
+    }
     
     // Get click position relative to viewport
     const rect = buttonRef.current?.getBoundingClientRect();
     const centerX = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
     const centerY = rect ? rect.top + rect.height / 2 : window.innerHeight / 2;
-    console.log('🌙 Click position:', { centerX, centerY });
+    if (process.env.NODE_ENV === 'development') {
+      console.log('🌙 Click position:', { centerX, centerY });
+    }
 
     // Start the swww-style center transition and get timing
     const themeChangeDelay = createSwwwCenterTransition(centerX, centerY, isDarkMode);
 
     // Change theme at the perfect timing (when overlay expansion is complete)
     setTimeout(() => {
-      console.log('🌙 Setting theme to:', newTheme);
+      if (process.env.NODE_ENV === 'development') {
+        console.log('🌙 Setting theme to:', newTheme);
+      }
       setTheme(newTheme);
-      console.log('🌙 Theme change called');
+      if (process.env.NODE_ENV === 'development') {
+        console.log('🌙 Theme change called');
+      }
       
       // Start fade out after theme change
       setTimeout(() => {
-        console.log('🎨 Starting fade out');
+        if (process.env.NODE_ENV === 'development') {
+          console.log('🎨 Starting fade out');
+        }
         const overlays = document.querySelectorAll('div[style*="z-index: 1"]');
         overlays.forEach(overlay => {
           (overlay as HTMLElement).style.opacity = '0';
@@ -103,14 +124,18 @@ export function AnimatedThemeToggle() {
         
         // Clean up after fade out
         setTimeout(() => {
-          console.log('🎨 Main animation complete');
+          if (process.env.NODE_ENV === 'development') {
+            console.log('🎨 Main animation complete');
+          }
           overlays.forEach(overlay => {
             if (overlay.parentNode) {
               overlay.parentNode.removeChild(overlay);
             }
           });
           document.body.classList.remove('theme-transitioning');
-          console.log('🎨 Cleanup complete');
+          if (process.env.NODE_ENV === 'development') {
+            console.log('🎨 Cleanup complete');
+          }
         }, 400); // Wait for fade out
         
       }, 100); // Small delay after theme change
@@ -138,10 +163,13 @@ export function AnimatedThemeToggle() {
       ref={buttonRef}
       onClick={toggleTheme}
       className="relative h-10 w-10 overflow-hidden rounded-full border-2 border-transparent focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background hover:scale-110 transition-transform duration-200"
+      aria-label={`Switch to ${isDarkMode ? 'light' : 'dark'} theme`}
+      aria-checked={isDarkMode}
+      role="switch"
     >
       <div 
         className={`sun absolute inset-0 flex items-center justify-center transition-all duration-500 ease-in-out ${
-          isDarkMode ? 'opacity-0 scale-50 rotate-180' : 'opacity-100 scale-100 rotate-0'
+          isDarkMode ? 'opacity-100 scale-100 rotate-0' : 'opacity-0 scale-50 rotate-180'
         }`}
       >
         <svg
@@ -169,7 +197,7 @@ export function AnimatedThemeToggle() {
       </div>
       <div 
         className={`moon absolute inset-0 flex items-center justify-center transition-all duration-500 ease-in-out ${
-          isDarkMode ? 'opacity-100 scale-100 rotate-0' : 'opacity-0 scale-50 rotate-180'
+          isDarkMode ? 'opacity-0 scale-50 rotate-180' : 'opacity-100 scale-100 rotate-0'
         }`}
       >
         <svg

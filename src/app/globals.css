@@ -170,9 +170,11 @@ body {
 }
 
 /* SWWW Center Transition Enhancements */
-html {
-  /* Ensure smooth theme transitions */
-  transition: background-color 0.3s ease-in-out;
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    /* Ensure smooth theme transitions for users who don't prefer reduced motion */
+    transition: background-color 0.3s ease-in-out;
+  }
 }
 
 /* Hardware acceleration for better performance */
