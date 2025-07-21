@@ -162,6 +162,38 @@ body {
   }
   body {
     @apply bg-background text-foreground;
-    @apply transition-colors duration-300 ease-in-out;
+    /* Optimize for the swww-style transition */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
   }
+}
+
+/* SWWW Center Transition Enhancements */
+html {
+  /* Ensure smooth theme transitions */
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Hardware acceleration for better performance */
+.sun, .moon {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+/* Enhanced button hover effects */
+button:hover .sun, button:hover .moon {
+  transform: scale(1.1) translateZ(0);
+  transition: transform 0.2s ease-out;
+}
+
+/* Prevent text selection during animations */
+body.theme-transitioning {
+  user-select: none;
+  pointer-events: none;
+}
+
+body.theme-transitioning * {
+  pointer-events: none;
 }
