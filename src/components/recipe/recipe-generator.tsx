@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input"; // Import Input component
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"; // Import Select components
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
@@ -63,7 +63,7 @@ export function RecipeGenerator() {
     <div className="w-full max-w-2xl space-y-8">
       <Card className="shadow-lg">
         <CardHeader>
-          <CardTitle className="text-2xl">What's in your fridge?</CardTitle>
+          <CardTitle className="text-2xl">What&apos;s in your fridge?</CardTitle>
           <CardDescription>
             List your available ingredients, separated by commas, and let our AI chef whip up a recipe for you!
           </CardDescription>
