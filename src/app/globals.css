@@ -162,6 +162,7 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+
     /* Optimize for the swww-style transition */
     transform: translateZ(0);
     backface-visibility: hidden;
