@@ -2,8 +2,7 @@
 
 import * as React from 'react';
 import { useTheme } from 'next-themes';
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const anime = require('animejs');
+import { animate as anime } from 'animejs';
 
 export function AnimatedThemeToggle() {
   const { setTheme, resolvedTheme } = useTheme();
