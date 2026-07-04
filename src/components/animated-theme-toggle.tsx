@@ -2,8 +2,6 @@
 
 import * as React from 'react';
 import { useTheme } from 'next-themes';
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const anime = require('animejs');
 
 export function AnimatedThemeToggle() {
   const { setTheme, resolvedTheme } = useTheme();
@@ -143,12 +141,17 @@ export function AnimatedThemeToggle() {
 
     // Simplified button animation - just a gentle scale
     if (buttonRef.current) {
-      anime({
-        targets: buttonRef.current,
-        scale: [1, 1.1, 1],
-        duration: 300,
-        easing: 'easeOutQuart'
-      });
+      buttonRef.current.animate(
+        [
+          { transform: 'scale(1)' },
+          { transform: 'scale(1.1)' },
+          { transform: 'scale(1)' }
+        ],
+        {
+          duration: 300,
+          easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)' // equivalent to easeOutQuart
+        }
+      );
     }
   };
 
