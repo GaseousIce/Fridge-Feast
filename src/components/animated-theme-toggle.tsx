@@ -14,24 +14,11 @@ export function AnimatedThemeToggle() {
   }, []);
 
   const createSwwwCenterTransition = (centerX: number, centerY: number, isDarkToLight: boolean) => {
-    if (process.env.NODE_ENV === 'development') {
-      console.log('🎨 Starting swww transition:', { centerX, centerY, isDarkToLight });
-    }
-    
     // Add body class to prevent interactions during transition
     document.body.classList.add('theme-transitioning');
     
     // Use simple, reliable color logic
     const targetBackground = isDarkToLight ? '#eff1f5' : '#1e1e2e';
-    const targetForeground = isDarkToLight ? '#4c4f69' : '#cdd6f4';
-    
-    if (process.env.NODE_ENV === 'development') {
-      console.log('🎨 Using target colors:', { 
-        targetBackground, 
-        targetForeground,
-        direction: isDarkToLight ? 'dark → light' : 'light → dark'
-      });
-    }
     
     // Create overlay that will be the "new" theme background
     const overlay = document.createElement('div');
@@ -55,17 +42,10 @@ export function AnimatedThemeToggle() {
       Math.pow(Math.max(centerY, window.innerHeight - centerY), 2)
     );
 
-    if (process.env.NODE_ENV === 'development') {
-      console.log('🎨 Max radius:', maxRadius);
-    }
-
     // Set initial clip-path as a small circle at the click point
     overlay.style.clipPath = `circle(0px at ${centerX}px ${centerY}px)`;
     
     document.body.appendChild(overlay);
-    if (process.env.NODE_ENV === 'development') {
-      console.log('🎨 Overlay added to DOM');
-    }
 
     // Start the expansion animation
     requestAnimationFrame(() => {
@@ -77,45 +57,23 @@ export function AnimatedThemeToggle() {
   };
 
   const toggleTheme = () => {
-    if (process.env.NODE_ENV === 'development') {
-      console.log('🌙 Theme toggle clicked!');
-      console.log('🌙 Current resolvedTheme:', resolvedTheme);
-      console.log('🌙 Document classList:', document.documentElement.classList.toString());
-    }
-    
     const isDarkMode = resolvedTheme === 'dark';
     const newTheme = isDarkMode ? 'light' : 'dark';
-    if (process.env.NODE_ENV === 'development') {
-      console.log('🌙 Current theme:', resolvedTheme, '→ New theme:', newTheme);
-      console.log('🌙 isDarkMode:', isDarkMode);
-    }
     
     // Get click position relative to viewport
     const rect = buttonRef.current?.getBoundingClientRect();
     const centerX = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
     const centerY = rect ? rect.top + rect.height / 2 : window.innerHeight / 2;
-    if (process.env.NODE_ENV === 'development') {
-      console.log('🌙 Click position:', { centerX, centerY });
-    }
 
     // Start the swww-style center transition and get timing
     const themeChangeDelay = createSwwwCenterTransition(centerX, centerY, isDarkMode);
 
     // Change theme at the perfect timing (when overlay expansion is complete)
     setTimeout(() => {
-      if (process.env.NODE_ENV === 'development') {
-        console.log('🌙 Setting theme to:', newTheme);
-      }
       setTheme(newTheme);
-      if (process.env.NODE_ENV === 'development') {
-        console.log('🌙 Theme change called');
-      }
       
       // Start fade out after theme change
       setTimeout(() => {
-        if (process.env.NODE_ENV === 'development') {
-          console.log('🎨 Starting fade out');
-        }
         const overlays = document.querySelectorAll('div[style*="z-index: 1"]');
         overlays.forEach(overlay => {
           (overlay as HTMLElement).style.opacity = '0';
@@ -123,18 +81,12 @@ export function AnimatedThemeToggle() {
         
         // Clean up after fade out
         setTimeout(() => {
-          if (process.env.NODE_ENV === 'development') {
-            console.log('🎨 Main animation complete');
-          }
           overlays.forEach(overlay => {
             if (overlay.parentNode) {
               overlay.parentNode.removeChild(overlay);
             }
           });
           document.body.classList.remove('theme-transitioning');
-          if (process.env.NODE_ENV === 'development') {
-            console.log('🎨 Cleanup complete');
-          }
         }, 400); // Wait for fade out
         
       }, 100); // Small delay after theme change
