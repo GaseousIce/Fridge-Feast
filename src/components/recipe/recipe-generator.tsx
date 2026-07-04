@@ -39,6 +39,13 @@ export function RecipeGenerator() {
     },
   });
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault();
+      form.handleSubmit(onSubmit)();
+    }
+  };
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     setError(null);
@@ -76,12 +83,15 @@ export function RecipeGenerator() {
                 name="ingredients"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="ingredients-input" className="text-lg">Ingredients</FormLabel>
+                    <FormLabel htmlFor="ingredients-input" className="text-lg">
+                      Ingredients <span className="text-red-500" aria-hidden="true">*</span>
+                    </FormLabel>
                     <FormControl>
                       <Textarea
                         id="ingredients-input"
                         placeholder="e.g., chicken breast, broccoli, soy sauce, garlic"
                         className="min-h-[100px] resize-y"
+                        onKeyDown={handleKeyDown}
                         {...field}
                       />
                     </FormControl>
@@ -153,6 +163,9 @@ export function RecipeGenerator() {
                   <>
                     <Sparkles className="mr-2 h-4 w-4" />
                     Generate Recipe
+                    <kbd className="ml-2 hidden rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100 sm:inline-block">
+                      <span className="text-xs">⌘</span> Enter
+                    </kbd>
                   </>
                 )}
               </Button>
@@ -160,6 +173,13 @@ export function RecipeGenerator() {
           </Form>
         </CardContent>
       </Card>
+
+      {/* Screen reader only status announcements */}
+      <div aria-live="polite" className="sr-only">
+        {isLoading && "Generating recipe, please wait."}
+        {error && `Error: ${error}`}
+        {recipe && "Recipe generated successfully. Results are below."}
+      </div>
 
       {error && (
         <Alert variant="destructive" className="shadow-md">
