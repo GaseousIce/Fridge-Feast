@@ -1,4 +1,4 @@
-# dependencies
+# ── Dependencies ──────────────────────────────────────────────
 /node_modules
 /.pnp
 .pnp.*
@@ -8,37 +8,38 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
+# ── Testing ───────────────────────────────────────────────────
 /coverage
 
-# next.js
+# ── Next.js build output ─────────────────────────────────────
 /.next/
 /out/
 
-# production
+# ── Production build ─────────────────────────────────────────
 /build
 
-# misc
+# ── OS files ─────────────────────────────────────────────────
 .DS_Store
 *.pem
 
-# logs
+# ── Logs ──────────────────────────────────────────────────────
 *.log*
 
-# vercel
+# ── Vercel ────────────────────────────────────────────────────
 .vercel
 
-# typescript
+# ── TypeScript ────────────────────────────────────────────────
 *.tsbuildinfo
 next-env.d.ts
 
-# genkit
+# ── GenKit ────────────────────────────────────────────────────
 .genkit/*
 
-# tooling
+# ── Editor / tooling ─────────────────────────────────────────
 .opencode/
 .Jules/
+graphify-out/
 
-# environment
+# ── Environment variables ────────────────────────────────────
 .env*
 
