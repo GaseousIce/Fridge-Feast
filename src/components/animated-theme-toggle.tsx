@@ -94,8 +94,7 @@ export function AnimatedThemeToggle() {
 
     // Simplified button animation - just a gentle scale
     if (buttonRef.current) {
-      anime({
-        targets: buttonRef.current,
+      anime(buttonRef.current, {
         scale: [1, 1.1, 1],
         duration: 300,
         easing: 'easeOutQuart'
