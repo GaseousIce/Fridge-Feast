@@ -6,12 +6,13 @@ import { animate as anime } from "animejs";
 
 export function AnimatedThemeToggle() {
   const { setTheme, resolvedTheme } = useTheme();
-  const [mounted, setMounted] = React.useState(false);
   const buttonRef = React.useRef<HTMLButtonElement>(null);
 
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = React.useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   const createSwwwCenterTransition = (centerX: number, centerY: number, isDarkToLight: boolean) => {
     // Add body class to prevent interactions during transition
