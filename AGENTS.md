@@ -33,12 +33,11 @@
 
 Use [Conventional Commits](https://www.conventionalcommits.org/):
 
-`<type>(<scope>): <subject>`
-
-Types: `feat`, `fix`, `test`, `refactor`, `docs`, `chore`, `style`, `perf`.
-Scope is optional (e.g., `ui`, `recipe`, `ai`, `theme`).
-
-**Before committing:** `git status`, `git diff`, `git log --oneline -10` — stage only intended files.
+- Format: `<type>(<scope>): <subject>`
+- Types: `feat`, `fix`, `test`, `refactor`, `docs`, `chore`, `style`, `perf`
+- Scope (optional): e.g. `ui`, `recipe`, `ai`, `theme`
+- Body description in bullet points for readability
+- Before committing: `git status`, `git diff`, `git log --oneline -10` — stage only intended files
 
 ## Notable
 
