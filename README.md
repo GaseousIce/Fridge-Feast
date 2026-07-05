@@ -31,9 +31,11 @@ Fridge Feast is a Next.js application that helps you generate delicious recipes 
     bun install
     ```
 3.  **Set up environment variables:**
+
     ```bash
     cp .env.example .env
     ```
+
     Then add your `GOOGLE_GENAI_API_KEY` to `.env`.
 
 4.  **Run the development server:**
@@ -44,14 +46,14 @@ Fridge Feast is a Next.js application that helps you generate delicious recipes 
 
 ### Other Commands
 
-| Command | Description |
-|---------|-------------|
-| `bun run build` | Production build (with ESLint + TypeScript checks) |
-| `bun run start` | Start production server |
-| `bun run lint` | Run ESLint |
-| `bun run typecheck` | Run TypeScript type checking |
-| `bun run test` | Run Vitest test suite |
-| `bun run genkit:dev` | Start GenKit flow runner for AI development |
+| Command              | Description                                        |
+| -------------------- | -------------------------------------------------- |
+| `bun run build`      | Production build (with ESLint + TypeScript checks) |
+| `bun run start`      | Start production server                            |
+| `bun run lint`       | Run ESLint                                         |
+| `bun run typecheck`  | Run TypeScript type checking                       |
+| `bun run test`       | Run Vitest test suite                              |
+| `bun run genkit:dev` | Start GenKit flow runner for AI development        |
 
 ## Project Structure
 

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { useTheme } from 'next-themes';
-import { animate as anime } from 'animejs';
+import * as React from "react";
+import { useTheme } from "next-themes";
+import { animate as anime } from "animejs";
 
 export function AnimatedThemeToggle() {
   const { setTheme, resolvedTheme } = useTheme();
@@ -15,13 +15,13 @@ export function AnimatedThemeToggle() {
 
   const createSwwwCenterTransition = (centerX: number, centerY: number, isDarkToLight: boolean) => {
     // Add body class to prevent interactions during transition
-    document.body.classList.add('theme-transitioning');
-    
+    document.body.classList.add("theme-transitioning");
+
     // Use simple, reliable color logic
-    const targetBackground = isDarkToLight ? '#eff1f5' : '#1e1e2e';
-    
+    const targetBackground = isDarkToLight ? "#eff1f5" : "#1e1e2e";
+
     // Create overlay that will be the "new" theme background
-    const overlay = document.createElement('div');
+    const overlay = document.createElement("div");
     overlay.style.cssText = `
       position: fixed;
       top: 0;
@@ -39,12 +39,12 @@ export function AnimatedThemeToggle() {
     // Calculate the maximum radius needed to cover the entire screen from the center point
     const maxRadius = Math.sqrt(
       Math.pow(Math.max(centerX, window.innerWidth - centerX), 2) +
-      Math.pow(Math.max(centerY, window.innerHeight - centerY), 2)
+        Math.pow(Math.max(centerY, window.innerHeight - centerY), 2),
     );
 
     // Set initial clip-path as a small circle at the click point
     overlay.style.clipPath = `circle(0px at ${centerX}px ${centerY}px)`;
-    
+
     document.body.appendChild(overlay);
 
     // Start the expansion animation
@@ -57,9 +57,9 @@ export function AnimatedThemeToggle() {
   };
 
   const toggleTheme = () => {
-    const isDarkMode = resolvedTheme === 'dark';
-    const newTheme = isDarkMode ? 'light' : 'dark';
-    
+    const isDarkMode = resolvedTheme === "dark";
+    const newTheme = isDarkMode ? "light" : "dark";
+
     // Get click position relative to viewport
     const rect = buttonRef.current?.getBoundingClientRect();
     const centerX = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
@@ -71,24 +71,23 @@ export function AnimatedThemeToggle() {
     // Change theme at the perfect timing (when overlay expansion is complete)
     setTimeout(() => {
       setTheme(newTheme);
-      
+
       // Start fade out after theme change
       setTimeout(() => {
         const overlays = document.querySelectorAll('div[style*="z-index: 1"]');
-        overlays.forEach(overlay => {
-          (overlay as HTMLElement).style.opacity = '0';
+        overlays.forEach((overlay) => {
+          (overlay as HTMLElement).style.opacity = "0";
         });
-        
+
         // Clean up after fade out
         setTimeout(() => {
-          overlays.forEach(overlay => {
+          overlays.forEach((overlay) => {
             if (overlay.parentNode) {
               overlay.parentNode.removeChild(overlay);
             }
           });
-          document.body.classList.remove('theme-transitioning');
+          document.body.classList.remove("theme-transitioning");
         }, 400); // Wait for fade out
-        
       }, 100); // Small delay after theme change
     }, themeChangeDelay);
 
@@ -97,7 +96,7 @@ export function AnimatedThemeToggle() {
       anime(buttonRef.current, {
         scale: [1, 1.1, 1],
         duration: 300,
-        easing: 'easeOutQuart'
+        easing: "easeOutQuart",
       });
     }
   };
@@ -106,20 +105,20 @@ export function AnimatedThemeToggle() {
     return <div className="h-10 w-10" />;
   }
 
-  const isDarkMode = resolvedTheme === 'dark';
+  const isDarkMode = resolvedTheme === "dark";
 
   return (
     <button
       ref={buttonRef}
       onClick={toggleTheme}
       className="relative h-10 w-10 overflow-hidden rounded-full border-2 border-transparent focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background hover:scale-110 transition-transform duration-200"
-      aria-label={`Switch to ${isDarkMode ? 'light' : 'dark'} theme`}
+      aria-label={`Switch to ${isDarkMode ? "light" : "dark"} theme`}
       aria-checked={isDarkMode}
       role="switch"
     >
-      <div 
+      <div
         className={`sun absolute inset-0 flex items-center justify-center transition-all duration-500 ease-in-out ${
-          isDarkMode ? 'opacity-100 scale-100 rotate-0' : 'opacity-0 scale-50 rotate-180'
+          isDarkMode ? "opacity-100 scale-100 rotate-0" : "opacity-0 scale-50 rotate-180"
         }`}
       >
         <svg
@@ -145,9 +144,9 @@ export function AnimatedThemeToggle() {
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
         </svg>
       </div>
-      <div 
+      <div
         className={`moon absolute inset-0 flex items-center justify-center transition-all duration-500 ease-in-out ${
-          isDarkMode ? 'opacity-0 scale-50 rotate-180' : 'opacity-100 scale-100 rotate-0'
+          isDarkMode ? "opacity-0 scale-50 rotate-180" : "opacity-100 scale-100 rotate-0"
         }`}
       >
         <svg

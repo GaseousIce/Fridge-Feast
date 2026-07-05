@@ -8,9 +8,22 @@ import { generateRecipe, type GenerateRecipeOutput } from "@/ai/flows/generate-r
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input"; // Import Input component
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"; // Import Select components
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"; // Import Select components
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Sparkles, AlertTriangle } from "lucide-react";
@@ -40,7 +53,7 @@ export function RecipeGenerator() {
   });
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
       e.preventDefault();
       form.handleSubmit(onSubmit)();
     }
@@ -72,7 +85,8 @@ export function RecipeGenerator() {
         <CardHeader>
           <CardTitle className="text-2xl">What&apos;s in your fridge?</CardTitle>
           <CardDescription>
-            List your available ingredients, separated by commas, and let our AI chef whip up a recipe for you!
+            List your available ingredients, separated by commas, and let our AI chef whip up a
+            recipe for you!
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -84,7 +98,10 @@ export function RecipeGenerator() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel htmlFor="ingredients-input" className="text-lg">
-                      Ingredients <span className="text-red-500" aria-hidden="true">*</span>
+                      Ingredients{" "}
+                      <span className="text-red-500" aria-hidden="true">
+                        *
+                      </span>
                     </FormLabel>
                     <FormControl>
                       <Textarea
@@ -122,7 +139,7 @@ export function RecipeGenerator() {
                   <FormItem>
                     <FormLabel className="text-lg">Cuisine (Optional)</FormLabel>
                     <FormControl>
-                       <Input placeholder="e.g., Italian, Mexican, Asian" {...field} />
+                      <Input placeholder="e.g., Italian, Mexican, Asian" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -194,9 +211,9 @@ export function RecipeGenerator() {
           <CardHeader>
             <CardTitle className="text-2xl">{recipe.recipeName}</CardTitle>
             {recipe.cookTime && (
-               <Badge variant="secondary" className="w-fit bg-accent text-accent-foreground">
-                 Cook Time: {recipe.cookTime}
-               </Badge>
+              <Badge variant="secondary" className="w-fit bg-accent text-accent-foreground">
+                Cook Time: {recipe.cookTime}
+              </Badge>
             )}
           </CardHeader>
           <CardContent>
