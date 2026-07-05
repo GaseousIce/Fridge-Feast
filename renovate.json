@@ -1,21 +1,9 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"],
-  "rangeStrategy": "bump",
-  "platformAutomerge": true,
-  "minimumReleaseAge": "3 days",
-  "packageRules": [
-    {
-      "description": "Group and auto-merge non-major updates",
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-      "groupName": "non-major dependencies",
-      "groupSlug": "all-minor-patch",
-      "automerge": true
-    },
-    {
-      "description": "Major updates require manual review",
-      "matchUpdateTypes": ["major"],
-      "automerge": false
-    }
-  ]
+  "extends": [
+    "config:recommended"
+  ],
+  "automerge": true,
+  "automergeType": "branch",
+  "platformAutomerge": true
 }
