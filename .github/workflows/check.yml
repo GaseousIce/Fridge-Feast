@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+  statuses: write
+
 jobs:
   ci:
     runs-on: ubuntu-latest
@@ -24,4 +28,4 @@ jobs:
       - name: notify vercel
         uses: vercel/repository-dispatch/actions/status@v1
         with:
-          name: Vercel - fridge-feast: check
+          name: "Vercel - fridge-feast: check"
