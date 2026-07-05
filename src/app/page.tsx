@@ -1,4 +1,4 @@
-import { RecipeGenerator } from "@/components/recipe/recipe-generator";
+import { RecipeGenerator } from "@/components/recipe/recipe-generator-lazy";
 import { FridgeFeastLogo } from "@/components/icons/fridge-feast-logo"; // Changed import back to FridgeFeastLogo
 import { AnimatedThemeToggle } from "@/components/animated-theme-toggle";
 
