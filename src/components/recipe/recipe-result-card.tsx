@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -20,14 +19,8 @@ export function RecipeResultCard({
   isSaved,
   onSave,
 }: RecipeResultCardProps) {
-  const [animateIn] = useState(true);
-
   return (
-    <Card
-      className={`shadow-lg transition-all duration-500 ease-out ${
-        animateIn ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-      }`}
-    >
+    <Card className="shadow-lg">
       <CardHeader className="space-y-3">
         <div className="flex items-start justify-between gap-4">
           <h2 className="text-2xl font-bold tracking-tight text-balance">{recipe.recipeName}</h2>
@@ -84,7 +77,7 @@ export function RecipeResultCard({
                 <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
                   {i + 1}
                 </span>
-                <span className="pt-0.5">{step}</span>
+                <span className="self-center">{step}</span>
               </li>
             ))}
           </ol>

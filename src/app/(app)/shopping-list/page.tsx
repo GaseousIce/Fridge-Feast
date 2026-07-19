@@ -99,7 +99,7 @@ export default function ShoppingListPage() {
                 {items.map((item) => (
                   <li key={item.id}>
                     <label
-                      className={`flex cursor-pointer items-center gap-3 rounded-md px-2 py-1.5 text-sm transition-colors hover:bg-accent/50 ${
+                      className={`flex cursor-pointer items-center gap-3 rounded-md px-2 py-2.5 text-sm transition-colors hover:bg-accent/50 ${
                         item.checked ? "text-muted-foreground line-through" : ""
                       }`}
                     >

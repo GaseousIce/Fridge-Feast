@@ -7,11 +7,7 @@ import { RecipeResultCard } from "@/components/recipe/recipe-result-card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ChefHat } from "lucide-react";
 
-export default function RecipeDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default function RecipeDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { getRecipe, saveRecipe } = useRecipeStorage();
   const recipe = getRecipe(id);
@@ -46,12 +42,14 @@ export default function RecipeDetailPage({
 
   return (
     <div className="mx-auto max-w-2xl">
-      <Button variant="ghost" asChild className="mb-4 -ml-2 text-muted-foreground">
-        <Link href="/recipes">
-          <ArrowLeft className="mr-1 h-4 w-4" />
-          Back to My Recipes
-        </Link>
-      </Button>
+      <div className="mb-4 flex">
+        <Button variant="ghost" asChild className="-ml-1 text-muted-foreground">
+          <Link href="/recipes">
+            <ArrowLeft className="mr-1 h-4 w-4" />
+            Back to My Recipes
+          </Link>
+        </Button>
+      </div>
 
       <RecipeResultCard
         recipe={output}
