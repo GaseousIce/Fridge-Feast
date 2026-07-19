@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useTheme } from "next-themes";
 import { animate as anime } from "animejs";
+import { flushSync } from "react-dom";
 
 export function AnimatedThemeToggle() {
   const { setTheme, resolvedTheme } = useTheme();
@@ -18,8 +19,8 @@ export function AnimatedThemeToggle() {
     // Add body class to prevent interactions during transition
     document.body.classList.add("theme-transitioning");
 
-    // Use simple, reliable color logic
-    const targetBackground = isDarkToLight ? "#eff1f5" : "#1e1e2e";
+    // Use actual theme background colors matching globals.css
+    const targetBackground = isDarkToLight ? "hsl(229 27% 96%)" : "hsl(220 36% 24%)";
 
     // Create overlay that will be the "new" theme background
     const overlay = document.createElement("div");
@@ -30,9 +31,9 @@ export function AnimatedThemeToggle() {
       width: 100vw;
       height: 100vh;
       background: ${targetBackground};
-      z-index: 1;
+      z-index: 99999;
       pointer-events: none;
-      transition: clip-path 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease-out;
+      transition: clip-path 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-out;
       transform: translateZ(0);
       opacity: 1;
     `;
@@ -54,7 +55,7 @@ export function AnimatedThemeToggle() {
     });
 
     // Return the timing for theme change (after expansion is complete)
-    return 800; // Theme changes when expansion is done
+    return 500; // Theme changes when expansion is done
   };
 
   const toggleTheme = () => {
@@ -66,7 +67,50 @@ export function AnimatedThemeToggle() {
     const centerX = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
     const centerY = rect ? rect.top + rect.height / 2 : window.innerHeight / 2;
 
-    // Start the swww-style center transition and get timing
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // 1. If user prefers reduced motion, skip transitions
+    if (prefersReducedMotion) {
+      setTheme(newTheme);
+      return;
+    }
+
+    // 2. Use View Transitions API if supported
+    if (typeof document !== "undefined" && (document as any).startViewTransition) {
+      const maxRadius = Math.hypot(
+        Math.max(centerX, window.innerWidth - centerX),
+        Math.max(centerY, window.innerHeight - centerY)
+      );
+
+      document.documentElement.style.setProperty("--x", `${centerX}px`);
+      document.documentElement.style.setProperty("--y", `${centerY}px`);
+      document.documentElement.style.setProperty("--r", `${maxRadius}px`);
+
+      (document as any).startViewTransition(() => {
+        flushSync(() => {
+          setTheme(newTheme);
+        });
+      });
+
+      // Scale bounce click feedback
+      if (buttonRef.current) {
+        anime(buttonRef.current, {
+          scale: [1, 1.15, 1],
+          duration: 300,
+          easing: "easeOutQuart",
+          complete: () => {
+            if (buttonRef.current) {
+              buttonRef.current.style.transform = "";
+            }
+          },
+        });
+      }
+      return;
+    }
+
+    // 3. Fallback: Custom manual transition
     const themeChangeDelay = createSwwwCenterTransition(centerX, centerY, isDarkMode);
 
     // Change theme at the perfect timing (when overlay expansion is complete)
@@ -75,7 +119,7 @@ export function AnimatedThemeToggle() {
 
       // Start fade out after theme change
       setTimeout(() => {
-        const overlays = document.querySelectorAll('div[style*="z-index: 1"]');
+        const overlays = document.querySelectorAll('div[style*="z-index: 99999"]');
         overlays.forEach((overlay) => {
           (overlay as HTMLElement).style.opacity = "0";
         });
@@ -88,16 +132,21 @@ export function AnimatedThemeToggle() {
             }
           });
           document.body.classList.remove("theme-transitioning");
-        }, 400); // Wait for fade out
-      }, 100); // Small delay after theme change
+        }, 300); // Wait for fade out
+      }, 50); // Small delay after theme change
     }, themeChangeDelay);
 
-    // Simplified button animation - just a gentle scale
+    // Button animation for fallback
     if (buttonRef.current) {
       anime(buttonRef.current, {
-        scale: [1, 1.1, 1],
+        scale: [1, 1.15, 1],
         duration: 300,
         easing: "easeOutQuart",
+        complete: () => {
+          if (buttonRef.current) {
+            buttonRef.current.style.transform = "";
+          }
+        },
       });
     }
   };
