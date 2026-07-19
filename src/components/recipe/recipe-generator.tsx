@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -25,17 +25,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Loader2, Sparkles, AlertTriangle, RefreshCw } from "lucide-react";
+import { Loader2, Sparkles, AlertTriangle, RefreshCw, WifiOff } from "lucide-react";
 import { RecipeResultCard } from "@/components/recipe/recipe-result-card";
 import { useRecipeStorage } from "@/hooks/use-recipe-storage";
 import type { SavedRecipe, ShoppingItem } from "@/lib/types";
 
 const formSchema = z.object({
-  ingredients: z.string().min(3, {
+  ingredients: z.string().trim().min(3, {
     message: "Please list at least one ingredient.",
   }),
-  dietaryRestrictions: z.string().optional(),
-  cuisine: z.string().optional(),
+  dietaryRestrictions: z.string().trim().optional(),
+  cuisine: z.string().trim().optional(),
   difficulty: z.string().optional(),
 });
 
@@ -43,6 +43,7 @@ export function RecipeGenerator() {
   const [recipe, setRecipe] = useState<GenerateRecipeOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isOffline, setIsOffline] = useState(false);
   const { saveRecipe, addShoppingItems, recipes } = useRecipeStorage();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -58,6 +59,24 @@ export function RecipeGenerator() {
 
   const isSaved = recipe ? recipes.some((r) => r.recipeName === recipe.recipeName) : false;
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleOnline = () => setIsOffline(false);
+    const handleOffline = () => setIsOffline(true);
+
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+
+    // Initial check
+    setIsOffline(!navigator.onLine);
+
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
       e.preventDefault();
@@ -66,6 +85,10 @@ export function RecipeGenerator() {
   };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!navigator.onLine) {
+      setError("You are offline. Recipe generation requires an active internet connection.");
+      return;
+    }
     setIsLoading(true);
     setError(null);
     setRecipe(null);
@@ -76,10 +99,14 @@ export function RecipeGenerator() {
         cuisine: values.cuisine || undefined,
         difficulty: values.difficulty || undefined,
       });
-      setRecipe(result);
+      if (result.success) {
+        setRecipe(result.data);
+      } else {
+        setError(result.error);
+      }
     } catch (e) {
       console.error(e);
-      setError("Failed to generate recipe. Please try again.");
+      setError("Failed to generate recipe due to a network or server issue. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -200,11 +227,27 @@ export function RecipeGenerator() {
                 />
               </div>
 
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              {isOffline && (
+                <Alert variant="destructive" className="border-destructive/50 bg-destructive/10">
+                  <WifiOff className="h-4 w-4" />
+                  <AlertTitle>You are offline</AlertTitle>
+                  <AlertDescription>
+                    Recipe generation requires an active internet connection. Please check your
+                    network.
+                  </AlertDescription>
+                </Alert>
+              )}
+
+              <Button type="submit" className="w-full" disabled={isLoading || isOffline}>
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Generating...
+                  </>
+                ) : isOffline ? (
+                  <>
+                    <WifiOff className="mr-2 h-4 w-4" />
+                    Offline
                   </>
                 ) : (
                   <>

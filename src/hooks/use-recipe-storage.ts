@@ -10,7 +10,9 @@ function readRecipes(): SavedRecipe[] {
   if (typeof window === "undefined") return [];
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as SavedRecipe[]) : [];
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? (parsed as SavedRecipe[]) : [];
   } catch {
     return [];
   }
@@ -28,7 +30,9 @@ function readShoppingItems(): ShoppingItem[] {
   if (typeof window === "undefined") return [];
   try {
     const raw = localStorage.getItem(SHOPPING_KEY);
-    return raw ? (JSON.parse(raw) as ShoppingItem[]) : [];
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? (parsed as ShoppingItem[]) : [];
   } catch {
     return [];
   }
@@ -55,6 +59,7 @@ export function useRecipeStorage() {
   }, [shoppingItems]);
 
   const saveRecipe = useCallback((recipe: SavedRecipe) => {
+    if (!recipe || !recipe.id) return;
     setRecipes((prev) => {
       if (prev.some((r) => r.id === recipe.id)) return prev;
       return [recipe, ...prev];
@@ -62,6 +67,7 @@ export function useRecipeStorage() {
   }, []);
 
   const deleteRecipe = useCallback((id: string) => {
+    if (!id) return;
     setRecipes((prev) => {
       const next = prev.filter((r) => r.id !== id);
       return next;
@@ -71,20 +77,23 @@ export function useRecipeStorage() {
 
   const getRecipe = useCallback(
     (id: string): SavedRecipe | undefined => {
+      if (!id) return undefined;
       return recipes.find((r) => r.id === id);
     },
     [recipes],
   );
 
   const addShoppingItems = useCallback((items: ShoppingItem[]) => {
+    if (!Array.isArray(items)) return;
     setShoppingItems((prev) => {
       const existingIds = new Set(prev.map((i) => i.id));
-      const newItems = items.filter((i) => !existingIds.has(i.id));
+      const newItems = items.filter((i) => i && i.id && !existingIds.has(i.id));
       return [...prev, ...newItems];
     });
   }, []);
 
   const toggleShoppingItem = useCallback((id: string) => {
+    if (!id) return;
     setShoppingItems((prev) =>
       prev.map((item) => (item.id === id ? { ...item, checked: !item.checked } : item)),
     );

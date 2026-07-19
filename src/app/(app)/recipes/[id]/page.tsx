@@ -33,11 +33,11 @@ export default function RecipeDetailPage({ params }: { params: Promise<{ id: str
   }
 
   const output = {
-    recipeName: recipe.recipeName,
-    ingredients: recipe.ingredients,
-    steps: recipe.steps,
-    cookTime: recipe.cookTime,
-    servings: recipe.servings,
+    recipeName: recipe.recipeName || "Untitled Recipe",
+    ingredients: recipe.ingredients || [],
+    steps: recipe.steps || [],
+    cookTime: recipe.cookTime || "",
+    servings: recipe.servings || 0,
   };
 
   return (
