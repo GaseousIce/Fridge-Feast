@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRecipeStorage } from "@/hooks/use-recipe-storage";
+import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +10,15 @@ import { Clock, ChefHat, Trash2, ArrowRight, BookOpen } from "lucide-react";
 
 export default function MyRecipesPage() {
   const { recipes, deleteRecipe } = useRecipeStorage();
+  const { toast } = useToast();
+
+  const handleDelete = (id: string, name: string) => {
+    deleteRecipe(id);
+    toast({
+      title: "Recipe deleted",
+      description: `"${name}" has been removed from your saved recipes.`,
+    });
+  };
 
   if (!recipes.length) {
     return (
@@ -32,30 +42,32 @@ export default function MyRecipesPage() {
 
   return (
     <div className="mx-auto max-w-3xl">
-      <h2 className="mb-6 text-2xl font-bold tracking-tight animate-fade-in-up">My Recipes</h2>
+      <h2 className="mb-6 text-2xl font-bold tracking-tight text-balance animate-fade-in-up">
+        My Recipes
+      </h2>
       <div className="space-y-3">
         {recipes.map((recipe, index) => (
           <Card
             key={recipe.id}
-            className="shadow-sm transition-shadow hover:shadow-md animate-fade-in-up stagger-delay"
+            className="relative overflow-hidden border border-border shadow-sm transition-all duration-300 hover:shadow-md hover:bg-secondary/20 hover:border-border/80 group animate-fade-in-up stagger-delay"
             style={{ "--i": index } as React.CSSProperties}
           >
             <div className="flex items-center gap-4 p-4 sm:p-6">
               <div className="flex min-w-0 flex-1 flex-col gap-2">
                 <Link
                   href={`/recipes/${recipe.id}`}
-                  className="text-lg font-semibold text-foreground hover:text-primary transition-colors truncate"
+                  className="text-lg font-semibold text-foreground hover:text-primary transition-colors truncate after:absolute after:inset-0 after:z-0 after:content-['']"
                 >
                   {recipe.recipeName || "Untitled Recipe"}
                 </Link>
-                <div className="flex flex-wrap items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                   {recipe.cookTime && (
-                    <Badge variant="secondary" className="flex items-center gap-1 text-xs">
+                    <Badge className="bg-accent text-accent-foreground border-transparent flex items-center gap-1 text-[10px] py-0.5 px-2">
                       <Clock className="h-3 w-3" />
                       <span className="break-words">{recipe.cookTime}</span>
                     </Badge>
                   )}
-                  <span className="text-xs text-muted-foreground">
+                  <span>
                     {Array.isArray(recipe.ingredients) ? recipe.ingredients.length : 0} ingredients
                   </span>
                   {recipe.savedAt &&
@@ -63,26 +75,27 @@ export default function MyRecipesPage() {
                       const d = new Date(recipe.savedAt);
                       if (isNaN(d.getTime())) return null;
                       return (
-                        <span className="text-xs text-muted-foreground">
-                          Saved {d.toLocaleDateString()}
-                        </span>
+                        <>
+                          <span className="select-none text-muted-foreground/50" aria-hidden="true">
+                            •
+                          </span>
+                          <span>Saved {d.toLocaleDateString()}</span>
+                        </>
                       );
                     })()}
                 </div>
               </div>
 
               <div className="flex shrink-0 items-center gap-1">
-                <Button variant="ghost" size="icon" asChild>
-                  <Link href={`/recipes/${recipe.id}`} aria-label="View recipe">
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </Button>
+                <div className="relative z-10 pointer-events-none flex h-10 w-10 items-center justify-center text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300 ease-out-quart">
+                  <ArrowRight className="h-5 w-5" />
+                </div>
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => deleteRecipe(recipe.id)}
+                  onClick={() => handleDelete(recipe.id, recipe.recipeName)}
                   aria-label="Delete recipe"
-                  className="text-muted-foreground hover:text-destructive"
+                  className="relative z-10 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>

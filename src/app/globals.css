@@ -225,3 +225,14 @@ body.theme-transitioning * {
     scroll-behavior: auto !important;
   }
 }
+
+/* Polish <kbd> shortcut indicators inside buttons */
+button kbd {
+  background-color: hsl(var(--primary-foreground) / 0.12) !important;
+  color: hsl(var(--primary-foreground)) !important;
+  border-color: hsl(var(--primary-foreground) / 0.2) !important;
+}
+
+button:hover kbd {
+  background-color: hsl(var(--primary-foreground) / 0.18) !important;
+}

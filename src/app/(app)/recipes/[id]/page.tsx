@@ -2,24 +2,28 @@
 
 import { use } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useRecipeStorage } from "@/hooks/use-recipe-storage";
+import { useToast } from "@/hooks/use-toast";
 import { RecipeResultCard } from "@/components/recipe/recipe-result-card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ChefHat } from "lucide-react";
 
 export default function RecipeDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const { getRecipe, saveRecipe } = useRecipeStorage();
+  const { getRecipe, deleteRecipe } = useRecipeStorage();
   const recipe = getRecipe(id);
+  const router = useRouter();
+  const { toast } = useToast();
 
   if (!recipe) {
     return (
       <div className="mx-auto flex max-w-lg flex-col items-center justify-center py-16 text-center">
-        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
-          <ChefHat className="h-8 w-8 text-muted-foreground" />
+        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+          <ChefHat className="h-8 w-8 text-primary animate-pulse" />
         </div>
-        <h2 className="mb-2 text-xl font-semibold">Recipe not found</h2>
-        <p className="mb-6 text-sm text-muted-foreground">
+        <h2 className="mb-2 text-xl font-semibold text-balance">Recipe not found</h2>
+        <p className="mb-6 text-sm text-muted-foreground text-balance">
           It may have been removed or the link may be broken.
         </p>
         <Button asChild>
@@ -55,7 +59,14 @@ export default function RecipeDetailPage({ params }: { params: Promise<{ id: str
         recipe={output}
         inputIngredients={recipe.inputIngredients}
         isSaved={true}
-        onSave={() => {}}
+        onSave={() => {
+          deleteRecipe(id);
+          toast({
+            title: "Recipe removed",
+            description: `"${recipe.recipeName}" has been removed from your saved recipes.`,
+          });
+          router.push("/recipes");
+        }}
       />
     </div>
   );
