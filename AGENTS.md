@@ -35,6 +35,16 @@
 
 `bun run genkit:dev` starts the GenKit flow runner via `tsx src/ai/dev.ts` (loads dotenv, imports flow).
 
+## Post-Job Workflow & Quality Checks
+
+Before concluding any task or job, always ensure the codebase is clean, formatted, and error-free by running the following commands:
+
+- **Formatting**: Run `bun run format:write` to format files, then `bun run format:check` to verify.
+- **Linting**: Run `bun run lint` to catch ESLint errors.
+- **Type Checking**: Run `bun run typecheck` to verify TypeScript compiler happiness.
+- **Unit Tests**: Run `bun run test` to verify Vitest tests.
+- **Production Build**: Run `bun run build` to confirm the entire project builds successfully (Next.js build checks ESLint + TS compilation).
+
 ## Commits
 
 - **Do not commit changes** unless explicitly asked/instructed by the user.
