@@ -42,7 +42,7 @@ export function RecipeResultCard({
         </div>
         <div className="flex flex-wrap gap-2">
           {recipe.cookTime && (
-            <Badge variant="secondary" className="flex items-center gap-1">
+            <Badge className="bg-accent text-accent-foreground border-transparent flex items-center gap-1">
               <Clock className="h-3 w-3" />
               <span className="break-words">{recipe.cookTime}</span>
             </Badge>
@@ -62,20 +62,13 @@ export function RecipeResultCard({
       <CardContent className="space-y-6">
         {Array.isArray(recipe.ingredients) && recipe.ingredients.length > 0 && (
           <section>
-            <h3
-              className="mb-2 flex items-center gap-1.5 text-lg font-semibold animate-fade-in-up stagger-delay"
-              style={{ "--i": 0 } as React.CSSProperties}
-            >
+            <h3 className="mb-2 flex items-center gap-1.5 text-lg font-semibold">
               <ChefHat className="h-4 w-4 text-muted-foreground" />
               Ingredients
             </h3>
-            <ul className="space-y-1">
+            <ul className="space-y-1.5">
               {recipe.ingredients.map((item, i) => (
-                <li
-                  key={i}
-                  className="flex items-start gap-2 text-sm text-foreground/90 animate-fade-in-up stagger-delay"
-                  style={{ "--i": i + 1 } as React.CSSProperties}
-                >
+                <li key={i} className="flex items-start gap-2 text-sm text-foreground/90">
                   <span className="mt-1.5 block h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
                   <span className="break-words">{item}</span>
                 </li>
@@ -86,23 +79,17 @@ export function RecipeResultCard({
 
         {Array.isArray(recipe.steps) && recipe.steps.length > 0 && (
           <section>
-            <h3
-              className="mb-2 text-lg font-semibold animate-fade-in-up stagger-delay"
-              style={{ "--i": 2 } as React.CSSProperties}
-            >
-              Instructions
-            </h3>
-            <ol className="space-y-3">
+            <h3 className="mb-2 text-lg font-semibold">Instructions</h3>
+            <ol className="space-y-3.5">
               {recipe.steps.map((step, i) => (
                 <li
                   key={i}
-                  className="flex items-start gap-3 text-sm text-foreground/90 animate-fade-in-up stagger-delay"
-                  style={{ "--i": i + 3, "--stagger-ms": "40ms" } as React.CSSProperties}
+                  className="flex items-start gap-3 text-sm text-foreground/90 text-pretty max-w-[70ch]"
                 >
                   <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary mt-0.5">
                     {i + 1}
                   </span>
-                  <span className="break-words">{step}</span>
+                  <span className="break-words leading-relaxed">{step}</span>
                 </li>
               ))}
             </ol>
