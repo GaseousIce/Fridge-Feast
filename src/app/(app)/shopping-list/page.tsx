@@ -66,8 +66,11 @@ export default function ShoppingListPage() {
     <div className="mx-auto max-w-3xl">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">Shopping List</h2>
-          <p className="text-sm text-muted-foreground">
+          <h2 className="text-2xl font-bold tracking-tight animate-fade-in-up">Shopping List</h2>
+          <p
+            className="text-sm text-muted-foreground animate-fade-in-up stagger-delay"
+            style={{ "--i": 1 } as React.CSSProperties}
+          >
             {pendingCount} item{pendingCount !== 1 ? "s" : ""} to buy
           </p>
         </div>
@@ -76,6 +79,8 @@ export default function ShoppingListPage() {
           size="sm"
           onClick={clearCheckedShoppingItems}
           disabled={!shoppingItems.some((i) => i.checked)}
+          className="animate-fade-in-up stagger-delay"
+          style={{ "--i": 2 } as React.CSSProperties}
         >
           <Trash2 className="mr-1 h-3 w-3" />
           Clear checked
@@ -83,8 +88,12 @@ export default function ShoppingListPage() {
       </div>
 
       <div className="space-y-4">
-        {grouped.map(([recipeId, { recipeName, items }]) => (
-          <Card key={recipeId} className="shadow-sm">
+        {grouped.map(([recipeId, { recipeName, items }], index) => (
+          <Card
+            key={recipeId}
+            className="shadow-sm animate-fade-in-up stagger-delay"
+            style={{ "--i": index + 3 } as React.CSSProperties}
+          >
             <CardHeader className="pb-2">
               <CardTitle className="text-base font-medium">
                 <Link
@@ -100,8 +109,10 @@ export default function ShoppingListPage() {
                 {items.map((item) => (
                   <li key={item.id}>
                     <label
-                      className={`flex cursor-pointer items-center gap-3 rounded-md px-2 py-2.5 text-sm transition-colors hover:bg-accent/50 ${
-                        item.checked ? "text-muted-foreground line-through" : ""
+                      className={`flex cursor-pointer items-center gap-3 rounded-md px-2 py-2.5 text-sm transition-all duration-200 hover:bg-accent/50 ${
+                        item.checked
+                          ? "text-muted-foreground line-through opacity-70"
+                          : "text-foreground"
                       }`}
                     >
                       <Checkbox

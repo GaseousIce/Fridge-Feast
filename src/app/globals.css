@@ -206,3 +206,22 @@ body.theme-transitioning {
 body.theme-transitioning * {
   pointer-events: none;
 }
+
+/* Stagger delay utility for sibling transitions */
+.stagger-delay {
+  animation-delay: calc(var(--i, 0) * var(--stagger-ms, 50ms));
+  animation-fill-mode: both;
+}
+
+/* Global prefers-reduced-motion accessibility overrides */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}

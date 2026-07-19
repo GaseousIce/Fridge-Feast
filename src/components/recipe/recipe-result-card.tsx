@@ -20,7 +20,7 @@ export function RecipeResultCard({
   onSave,
 }: RecipeResultCardProps) {
   return (
-    <Card className="shadow-lg">
+    <Card className="shadow-lg animate-fade-in-up">
       <CardHeader className="space-y-3">
         <div className="flex items-start justify-between gap-4">
           <h2 className="text-2xl font-bold tracking-tight text-balance break-words">
@@ -30,13 +30,13 @@ export function RecipeResultCard({
             variant="ghost"
             size="icon"
             onClick={onSave}
-            className="shrink-0"
+            className="shrink-0 transition-transform active:scale-95 duration-100"
             aria-label={isSaved ? "Unsave recipe" : "Save recipe"}
           >
             {isSaved ? (
-              <BookmarkCheck className="h-5 w-5 text-primary" />
+              <BookmarkCheck key="saved" className="h-5 w-5 text-primary animate-scale-pop" />
             ) : (
-              <Bookmark className="h-5 w-5 text-muted-foreground" />
+              <Bookmark key="unsaved" className="h-5 w-5 text-muted-foreground animate-scale-pop" />
             )}
           </Button>
         </div>
@@ -62,13 +62,20 @@ export function RecipeResultCard({
       <CardContent className="space-y-6">
         {Array.isArray(recipe.ingredients) && recipe.ingredients.length > 0 && (
           <section>
-            <h3 className="mb-2 flex items-center gap-1.5 text-lg font-semibold">
+            <h3
+              className="mb-2 flex items-center gap-1.5 text-lg font-semibold animate-fade-in-up stagger-delay"
+              style={{ "--i": 0 } as React.CSSProperties}
+            >
               <ChefHat className="h-4 w-4 text-muted-foreground" />
               Ingredients
             </h3>
             <ul className="space-y-1">
               {recipe.ingredients.map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-foreground/90">
+                <li
+                  key={i}
+                  className="flex items-start gap-2 text-sm text-foreground/90 animate-fade-in-up stagger-delay"
+                  style={{ "--i": i + 1 } as React.CSSProperties}
+                >
                   <span className="mt-1.5 block h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
                   <span className="break-words">{item}</span>
                 </li>
@@ -79,10 +86,19 @@ export function RecipeResultCard({
 
         {Array.isArray(recipe.steps) && recipe.steps.length > 0 && (
           <section>
-            <h3 className="mb-2 text-lg font-semibold">Instructions</h3>
+            <h3
+              className="mb-2 text-lg font-semibold animate-fade-in-up stagger-delay"
+              style={{ "--i": 2 } as React.CSSProperties}
+            >
+              Instructions
+            </h3>
             <ol className="space-y-3">
               {recipe.steps.map((step, i) => (
-                <li key={i} className="flex items-start gap-3 text-sm text-foreground/90">
+                <li
+                  key={i}
+                  className="flex items-start gap-3 text-sm text-foreground/90 animate-fade-in-up stagger-delay"
+                  style={{ "--i": i + 3, "--stagger-ms": "40ms" } as React.CSSProperties}
+                >
                   <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary mt-0.5">
                     {i + 1}
                   </span>

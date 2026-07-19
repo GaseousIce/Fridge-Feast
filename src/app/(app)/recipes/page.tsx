@@ -32,10 +32,14 @@ export default function MyRecipesPage() {
 
   return (
     <div className="mx-auto max-w-3xl">
-      <h2 className="mb-6 text-2xl font-bold tracking-tight">My Recipes</h2>
+      <h2 className="mb-6 text-2xl font-bold tracking-tight animate-fade-in-up">My Recipes</h2>
       <div className="space-y-3">
-        {recipes.map((recipe) => (
-          <Card key={recipe.id} className="shadow-sm transition-shadow hover:shadow-md">
+        {recipes.map((recipe, index) => (
+          <Card
+            key={recipe.id}
+            className="shadow-sm transition-shadow hover:shadow-md animate-fade-in-up stagger-delay"
+            style={{ "--i": index } as React.CSSProperties}
+          >
             <div className="flex items-center gap-4 p-4 sm:p-6">
               <div className="flex min-w-0 flex-1 flex-col gap-2">
                 <Link
