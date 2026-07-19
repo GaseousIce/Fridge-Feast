@@ -29,8 +29,14 @@ export type GenerateRecipeInput = z.infer<typeof GenerateRecipeInputSchema>;
 
 const GenerateRecipeOutputSchema = z.object({
   recipeName: z.string().describe("The name of the recipe."),
-  instructions: z.string().describe("The instructions for the recipe."),
+  ingredients: z
+    .array(z.string())
+    .describe("List of ingredients with quantities, one per item."),
+  steps: z
+    .array(z.string())
+    .describe("Step-by-step cooking instructions, each step as a separate string."),
   cookTime: z.string().describe("The estimated cook time for the recipe."),
+  servings: z.number().describe("Number of servings the recipe yields."),
 });
 export type GenerateRecipeOutput = z.infer<typeof GenerateRecipeOutputSchema>;
 
@@ -51,11 +57,14 @@ Ingredients: {{{ingredients}}}
 {{#if cuisine}}Cuisine: {{{cuisine}}}{{/if}}
 {{#if difficulty}}Difficulty: {{{difficulty}}}{{/if}}
 
-Recipe: {
-  "recipeName": "",
-  "instructions": "",
-    "cookTime": ""
-}`,
+Return a JSON object with the following fields:
+- recipeName: the name of the recipe
+- ingredients: array of ingredient strings with quantities
+- steps: array of step-by-step instruction strings
+- cookTime: estimated cook time as a string (e.g. "25 min")
+- servings: number of servings
+
+Recipe:`,
 });
 
 const generateRecipeFlow = ai.defineFlow(

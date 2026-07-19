@@ -1,20 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { generateRecipe, type GenerateRecipeOutput } from "@/ai/flows/generate-recipe";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input"; // Import Input component
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"; // Import Select components
+} from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
@@ -25,8 +25,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
-import { Loader2, Sparkles, AlertTriangle } from "lucide-react";
+import { Loader2, Sparkles, AlertTriangle, RefreshCw } from "lucide-react";
+import { RecipeResultCard } from "@/components/recipe/recipe-result-card";
+import { useRecipeStorage } from "@/hooks/use-recipe-storage";
+import type { SavedRecipe, ShoppingItem } from "@/lib/types";
 
 const formSchema = z.object({
   ingredients: z.string().min(3, {
@@ -41,6 +43,7 @@ export function RecipeGenerator() {
   const [recipe, setRecipe] = useState<GenerateRecipeOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { saveRecipe, addShoppingItems, recipes } = useRecipeStorage();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,6 +54,11 @@ export function RecipeGenerator() {
       difficulty: "",
     },
   });
+  const getValues = form.getValues;
+
+  const isSaved = recipe
+    ? recipes.some((r) => r.recipeName === recipe.recipeName)
+    : false;
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
@@ -66,7 +74,7 @@ export function RecipeGenerator() {
     try {
       const result = await generateRecipe({
         ingredients: values.ingredients,
-        dietaryRestrictions: values.dietaryRestrictions || undefined, // Pass undefined if empty string
+        dietaryRestrictions: values.dietaryRestrictions || undefined,
         cuisine: values.cuisine || undefined,
         difficulty: values.difficulty || undefined,
       });
@@ -78,6 +86,30 @@ export function RecipeGenerator() {
       setIsLoading(false);
     }
   }
+
+  const handleSave = useCallback(() => {
+    if (!recipe) return;
+    const id = crypto.randomUUID();
+    const saved: SavedRecipe = {
+      id,
+      recipeName: recipe.recipeName,
+      ingredients: recipe.ingredients,
+      steps: recipe.steps,
+      cookTime: recipe.cookTime,
+      servings: recipe.servings,
+      inputIngredients: getValues("ingredients"),
+      savedAt: new Date().toISOString(),
+    };
+    saveRecipe(saved);
+    const shopping: ShoppingItem[] = recipe.ingredients.map((item) => ({
+      id: `${id}-${crypto.randomUUID()}`,
+      label: item,
+      recipeId: id,
+      recipeName: recipe.recipeName,
+      checked: false,
+    }));
+    addShoppingItems(shopping);
+  }, [recipe, getValues, saveRecipe, addShoppingItems]);
 
   return (
     <div className="w-full max-w-2xl space-y-8">
@@ -99,7 +131,7 @@ export function RecipeGenerator() {
                   <FormItem>
                     <FormLabel htmlFor="ingredients-input" className="text-lg">
                       Ingredients{" "}
-                      <span className="text-red-500" aria-hidden="true">
+                      <span className="text-destructive" aria-hidden="true">
                         *
                       </span>
                     </FormLabel>
@@ -117,7 +149,6 @@ export function RecipeGenerator() {
                 )}
               />
 
-              {/* New Fields for Customization */}
               <FormField
                 control={form.control}
                 name="dietaryRestrictions"
@@ -132,43 +163,44 @@ export function RecipeGenerator() {
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="cuisine"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-lg">Cuisine (Optional)</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g., Italian, Mexican, Asian" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="difficulty"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-lg">Difficulty (Optional)</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <FormField
+                  control={form.control}
+                  name="cuisine"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-lg">Cuisine (Optional)</FormLabel>
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select difficulty" />
-                        </SelectTrigger>
+                        <Input placeholder="e.g., Italian, Mexican" {...field} />
                       </FormControl>
-                      <SelectContent>
-                        <SelectItem value="easy">Easy</SelectItem>
-                        <SelectItem value="medium">Medium</SelectItem>
-                        <SelectItem value="hard">Hard</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              {/* End New Fields */}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="difficulty"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-lg">Difficulty (Optional)</FormLabel>
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select difficulty" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="easy">Easy</SelectItem>
+                          <SelectItem value="medium">Medium</SelectItem>
+                          <SelectItem value="hard">Hard</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? (
@@ -191,36 +223,49 @@ export function RecipeGenerator() {
         </CardContent>
       </Card>
 
-      {/* Screen reader only status announcements */}
       <div aria-live="polite" className="sr-only">
         {isLoading && "Generating recipe, please wait."}
         {error && `Error: ${error}`}
         {recipe && "Recipe generated successfully. Results are below."}
       </div>
 
+      {isLoading && (
+        <Card className="shadow-lg">
+          <CardContent className="flex items-center justify-center py-12">
+            <div className="flex flex-col items-center gap-3 text-muted-foreground">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <p className="text-sm">Cooking up something delicious...</p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {error && (
         <Alert variant="destructive" className="shadow-md">
           <AlertTriangle className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
+          <AlertDescription className="flex flex-col gap-3">
+            <span>{error}</span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => form.handleSubmit(onSubmit)()}
+              className="w-fit"
+            >
+              <RefreshCw className="mr-1 h-3 w-3" />
+              Try again
+            </Button>
+          </AlertDescription>
         </Alert>
       )}
 
-      {recipe && (
-        <Card className="shadow-lg">
-          <CardHeader>
-            <CardTitle className="text-2xl">{recipe.recipeName}</CardTitle>
-            {recipe.cookTime && (
-              <Badge variant="secondary" className="w-fit bg-accent text-accent-foreground">
-                Cook Time: {recipe.cookTime}
-              </Badge>
-            )}
-          </CardHeader>
-          <CardContent>
-            <h3 className="text-xl font-semibold mb-2">Instructions:</h3>
-            <p className="whitespace-pre-wrap text-foreground/90">{recipe.instructions}</p>
-          </CardContent>
-        </Card>
+      {recipe && !isLoading && (
+        <RecipeResultCard
+          recipe={recipe}
+          inputIngredients={getValues("ingredients")}
+          isSaved={isSaved}
+          onSave={handleSave}
+        />
       )}
     </div>
   );
