@@ -28,6 +28,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Loader2, Sparkles, AlertTriangle, RefreshCw, WifiOff } from "lucide-react";
 import { RecipeResultCard } from "@/components/recipe/recipe-result-card";
 import { useRecipeStorage } from "@/hooks/use-recipe-storage";
+import { useToast } from "@/hooks/use-toast";
 import type { SavedRecipe, ShoppingItem } from "@/lib/types";
 
 const formSchema = z.object({
@@ -44,7 +45,8 @@ export function RecipeGenerator() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isOffline, setIsOffline] = useState(false);
-  const { saveRecipe, addShoppingItems, recipes } = useRecipeStorage();
+  const { saveRecipe, addShoppingItems, recipes, deleteRecipe } = useRecipeStorage();
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -117,27 +119,41 @@ export function RecipeGenerator() {
 
   const handleSave = useCallback(() => {
     if (!recipe) return;
-    const id = crypto.randomUUID();
-    const saved: SavedRecipe = {
-      id,
-      recipeName: recipe.recipeName,
-      ingredients: recipe.ingredients,
-      steps: recipe.steps,
-      cookTime: recipe.cookTime,
-      servings: recipe.servings,
-      inputIngredients: getValues("ingredients"),
-      savedAt: new Date().toISOString(),
-    };
-    saveRecipe(saved);
-    const shopping: ShoppingItem[] = recipe.ingredients.map((item) => ({
-      id: `${id}-${crypto.randomUUID()}`,
-      label: item,
-      recipeId: id,
-      recipeName: recipe.recipeName,
-      checked: false,
-    }));
-    addShoppingItems(shopping);
-  }, [recipe, getValues, saveRecipe, addShoppingItems]);
+    const existingRecipe = recipes.find((r) => r.recipeName === recipe.recipeName);
+
+    if (existingRecipe) {
+      deleteRecipe(existingRecipe.id);
+      toast({
+        title: "Recipe removed",
+        description: `"${recipe.recipeName}" has been removed from your saved recipes.`,
+      });
+    } else {
+      const id = crypto.randomUUID();
+      const saved: SavedRecipe = {
+        id,
+        recipeName: recipe.recipeName,
+        ingredients: recipe.ingredients,
+        steps: recipe.steps,
+        cookTime: recipe.cookTime,
+        servings: recipe.servings,
+        inputIngredients: getValues("ingredients"),
+        savedAt: new Date().toISOString(),
+      };
+      saveRecipe(saved);
+      const shopping: ShoppingItem[] = recipe.ingredients.map((item) => ({
+        id: `${id}-${crypto.randomUUID()}`,
+        label: item,
+        recipeId: id,
+        recipeName: recipe.recipeName,
+        checked: false,
+      }));
+      addShoppingItems(shopping);
+      toast({
+        title: "Recipe saved!",
+        description: `"${recipe.recipeName}" has been saved. Ingredients added to shopping list.`,
+      });
+    }
+  }, [recipe, getValues, saveRecipe, addShoppingItems, deleteRecipe, recipes, toast]);
 
   return (
     <div className="w-full max-w-2xl space-y-8">
@@ -274,14 +290,61 @@ export function RecipeGenerator() {
       </div>
 
       {isLoading && (
-        <Card className="shadow-lg animate-fade-in">
-          <CardContent className="flex items-center justify-center py-12">
-            <div className="flex flex-col items-center gap-3 text-muted-foreground animate-pulse duration-1000">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
-              <p className="text-sm font-medium">Cooking up something delicious...</p>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="space-y-4 w-full animate-fade-in">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground animate-pulse justify-center">
+            <Loader2 className="h-4 w-4 animate-spin text-primary" />
+            <span>AI Chef is composing your recipe...</span>
+          </div>
+          <Card className="shadow-lg animate-pulse border border-border">
+            <CardHeader className="space-y-3 pb-4">
+              <div className="flex items-start justify-between gap-4">
+                <div className="h-7 w-2/3 rounded-md bg-muted/60" />
+                <div className="h-8 w-8 rounded-full bg-muted/60 shrink-0" />
+              </div>
+              <div className="flex gap-2">
+                <div className="h-5 w-20 rounded bg-muted/60" />
+                <div className="h-5 w-24 rounded bg-muted/60" />
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <section className="space-y-3">
+                <div className="h-5 w-28 rounded bg-muted/60" />
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <div className="h-1.5 w-1.5 rounded-full bg-muted/60" />
+                    <div className="h-4 w-1/2 rounded bg-muted/60" />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="h-1.5 w-1.5 rounded-full bg-muted/60" />
+                    <div className="h-4 w-1/3 rounded bg-muted/60" />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="h-1.5 w-1.5 rounded-full bg-muted/60" />
+                    <div className="h-4 w-2/3 rounded bg-muted/60" />
+                  </div>
+                </div>
+              </section>
+              <section className="space-y-3">
+                <div className="h-5 w-28 rounded bg-muted/60" />
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <div className="h-6 w-6 rounded-full bg-muted/60 shrink-0" />
+                    <div className="space-y-1.5 w-full">
+                      <div className="h-4 w-11/12 rounded bg-muted/60" />
+                      <div className="h-4 w-4/5 rounded bg-muted/60" />
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="h-6 w-6 rounded-full bg-muted/60 shrink-0" />
+                    <div className="space-y-1.5 w-full">
+                      <div className="h-4 w-10/12 rounded bg-muted/60" />
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </CardContent>
+          </Card>
+        </div>
       )}
 
       {error && (
