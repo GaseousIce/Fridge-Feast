@@ -44,19 +44,35 @@ export default function ShoppingListPage() {
   if (!recipes.length) {
     return (
       <div className="mx-auto flex max-w-lg flex-col items-center justify-center py-16 text-center">
-        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+        <div
+          className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 animate-fade-in-up stagger-delay"
+          style={{ "--i": 0 } as React.CSSProperties}
+        >
           <ShoppingCart className="h-8 w-8 text-primary" />
         </div>
-        <h2 className="mb-2 text-xl font-semibold">Your shopping list is empty</h2>
-        <p className="mb-6 text-sm text-muted-foreground">
+        <h2
+          className="mb-2 text-xl font-semibold animate-fade-in-up stagger-delay"
+          style={{ "--i": 1 } as React.CSSProperties}
+        >
+          Your shopping list is empty
+        </h2>
+        <p
+          className="mb-6 text-sm text-muted-foreground animate-fade-in-up stagger-delay"
+          style={{ "--i": 2 } as React.CSSProperties}
+        >
           Save a recipe and its ingredients will appear here automatically.
         </p>
-        <Button asChild>
-          <Link href="/">
-            <ChefHat className="mr-2 h-4 w-4" />
-            Generate a recipe
-          </Link>
-        </Button>
+        <div
+          className="animate-fade-in-up stagger-delay"
+          style={{ "--i": 3 } as React.CSSProperties}
+        >
+          <Button asChild>
+            <Link href="/">
+              <ChefHat className="mr-2 h-4 w-4" />
+              Generate a recipe
+            </Link>
+          </Button>
+        </div>
       </div>
     );
   }
@@ -64,21 +80,27 @@ export default function ShoppingListPage() {
   if (!shoppingItems.length) {
     return (
       <div className="mx-auto flex max-w-lg flex-col items-center justify-center py-16 text-center">
-        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 animate-fade-in-up">
+        <div
+          className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 animate-fade-in-up stagger-delay"
+          style={{ "--i": 0 } as React.CSSProperties}
+        >
           <ShoppingCart className="h-8 w-8 text-primary" />
         </div>
-        <h2 className="mb-2 text-xl font-semibold text-balance animate-fade-in-up">
+        <h2
+          className="mb-2 text-xl font-semibold text-balance animate-fade-in-up stagger-delay"
+          style={{ "--i": 1 } as React.CSSProperties}
+        >
           Nothing to shop for yet
         </h2>
         <p
           className="mb-6 text-sm text-muted-foreground max-w-sm text-balance animate-fade-in-up stagger-delay"
-          style={{ "--i": 1 } as React.CSSProperties}
+          style={{ "--i": 2 } as React.CSSProperties}
         >
           Ingredients from your saved recipes will appear here so you can shop for them.
         </p>
         <div
           className="flex flex-wrap justify-center gap-3 animate-fade-in-up stagger-delay"
-          style={{ "--i": 2 } as React.CSSProperties}
+          style={{ "--i": 3 } as React.CSSProperties}
         >
           <Button asChild variant="outline">
             <Link href="/recipes">
@@ -101,7 +123,10 @@ export default function ShoppingListPage() {
     <div className="mx-auto max-w-3xl">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-balance animate-fade-in-up">
+          <h2
+            className="text-2xl font-bold tracking-tight text-balance animate-fade-in-up stagger-delay"
+            style={{ "--i": 0 } as React.CSSProperties}
+          >
             Shopping List
           </h2>
           <p
