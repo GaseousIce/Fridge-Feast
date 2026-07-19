@@ -182,37 +182,6 @@ body {
   }
 }
 
-/* Hardware acceleration for better performance */
-.sun,
-.moon {
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  will-change: transform, opacity;
-}
-
-/* Enhanced button hover effects */
-button:hover .sun,
-button:hover .moon {
-  transform: scale(1.1) translateZ(0);
-  transition: transform 0.2s ease-out;
-}
-
-/* Prevent text selection during animations */
-body.theme-transitioning {
-  user-select: none;
-  pointer-events: none;
-}
-
-body.theme-transitioning * {
-  pointer-events: none;
-}
-
-/* Stagger delay utility for sibling transitions */
-.stagger-delay {
-  animation-delay: calc(var(--i, 0) * var(--stagger-ms, 50ms));
-  animation-fill-mode: both;
-}
-
 /* Global prefers-reduced-motion accessibility overrides */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -254,5 +223,38 @@ button:hover kbd {
   }
   to {
     clip-path: circle(var(--r, 100%) at var(--x, 50%) var(--y, 50%));
+  }
+}
+
+/* ── Navbar animations ──────────────────────────────────────────── */
+
+/* Entrance: links fade + rise in with per-item stagger */
+@keyframes nav-link-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.nav-link {
+  animation: nav-link-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--i, 0) * 60ms + 80ms);
+}
+
+/* The shared sliding pill — transitions are applied inline via JS */
+.nav-pill {
+  will-change: left, width;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-link {
+    animation: none !important;
+  }
+  .nav-pill {
+    transition: none !important;
   }
 }
