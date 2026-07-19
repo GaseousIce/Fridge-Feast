@@ -11,8 +11,6 @@
 - **`bun run test`**: Runs unit tests: `vitest run` (no Vitest config file; uses defaults).
 - **`bun run format:check`**: Verifies code formatting: `prettier --check .`.
 - **`bun run format:write`**: Auto-formats files: `prettier --write .`.
-- **`bun run genkit:dev`**: Starts the GenKit flow runner UI: `genkit start -- tsx src/ai/dev.ts`.
-- **`bun run genkit:watch`**: Starts the GenKit flow runner UI with auto-reload: `genkit start -- tsx --watch src/ai/dev.ts`.
 
 ## Required env
 
@@ -22,18 +20,14 @@
 
 - Single Next.js 15 App Router app (not a monorepo).
 - Path alias `@/*` → `./src/*`.
-- **Entrypoints:** `src/app/page.tsx` (home), `src/app/layout.tsx` (root layout), `src/ai/flows/generate-recipe.ts` (GenKit server action), `src/ai/genkit.ts` (model init).
-- **Recipe generation** is a GenKit flow in `src/ai/flows/` using Gemini 2.0 Flash.
+- **Entrypoints:** `src/app/page.tsx` (home), `src/app/layout.tsx` (root layout), `src/ai/flows/generate-recipe.ts` (recipe generation endpoint).
+- **Recipe generation** uses `@google/genai` SDK with Gemini 1.5 Flash.
 - **Two theme toggle components** exist (`animated-theme-toggle.tsx`, `theme-toggle-switch.tsx`); only `AnimatedThemeToggle` is wired up.
 
 ## Testing
 
 - Vitest tests live in two places: co-located (`src/**/*.test.ts`) and in `tests/`. No enforced convention.
 - Two tests exist: `src/lib/utils.test.ts`, `tests/hooks/use-toast.test.ts`.
-
-## GenKit dev
-
-`bun run genkit:dev` starts the GenKit flow runner via `tsx src/ai/dev.ts` (loads dotenv, imports flow).
 
 ## Post-Job Workflow & Quality Checks
 
