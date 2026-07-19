@@ -15,11 +15,11 @@ type ToasterToast = ToastProps & {
   action?: ToastActionElement;
 };
 
-let count = 0;
+let toastIdCounter = 0;
 
-function genId() {
-  count = (count + 1) % Number.MAX_SAFE_INTEGER;
-  return count.toString();
+function generateToastId() {
+  toastIdCounter = (toastIdCounter + 1) % Number.MAX_SAFE_INTEGER;
+  return toastIdCounter.toString();
 }
 
 type Action =
@@ -73,7 +73,11 @@ export const reducer = (state: State, action: Action): State => {
     case "UPDATE_TOAST":
       return {
         ...state,
-        toasts: state.toasts.map((t) => (t.id === action.toast.id ? { ...t, ...action.toast } : t)),
+        toasts: state.toasts.map((existingToast) =>
+          existingToast.id === action.toast.id
+            ? { ...existingToast, ...action.toast }
+            : existingToast,
+        ),
       };
 
     case "DISMISS_TOAST": {
@@ -91,13 +95,13 @@ export const reducer = (state: State, action: Action): State => {
 
       return {
         ...state,
-        toasts: state.toasts.map((t) =>
-          t.id === toastId || toastId === undefined
+        toasts: state.toasts.map((existingToast) =>
+          existingToast.id === toastId || toastId === undefined
             ? {
-                ...t,
+                ...existingToast,
                 open: false,
               }
-            : t,
+            : existingToast,
         ),
       };
     }
@@ -110,7 +114,7 @@ export const reducer = (state: State, action: Action): State => {
       }
       return {
         ...state,
-        toasts: state.toasts.filter((t) => t.id !== action.toastId),
+        toasts: state.toasts.filter((existingToast) => existingToast.id !== action.toastId),
       };
   }
 };
@@ -129,7 +133,7 @@ function dispatch(action: Action) {
 type Toast = Omit<ToasterToast, "id">;
 
 function toast({ ...props }: Toast) {
-  const id = genId();
+  const id = generateToastId();
 
   const update = (props: ToasterToast) =>
     dispatch({
@@ -163,9 +167,9 @@ function useToast() {
   React.useEffect(() => {
     listeners.push(setState);
     return () => {
-      const index = listeners.indexOf(setState);
-      if (index > -1) {
-        listeners.splice(index, 1);
+      const listenerIndex = listeners.indexOf(setState);
+      if (listenerIndex > -1) {
+        listeners.splice(listenerIndex, 1);
       }
     };
   }, [state]);

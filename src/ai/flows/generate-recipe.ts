@@ -75,7 +75,7 @@ export async function generateRecipe(input: GenerateRecipeInput): Promise<Genera
       );
     }
 
-    const ai = new GoogleGenAI({ apiKey });
+    const genaiClient = new GoogleGenAI({ apiKey });
 
     const promptText = `You are a world class chef.
 
@@ -95,7 +95,7 @@ Return a JSON object with the following fields:
 
 Recipe:`;
 
-    const response = await ai.models.generateContent({
+    const response = await genaiClient.models.generateContent({
       model: "gemini-1.5-flash",
       contents: promptText,
       config: {
@@ -104,42 +104,46 @@ Recipe:`;
       },
     });
 
-    const text = response.text;
-    if (!text) {
+    const rawResponseText = response.text;
+    if (!rawResponseText) {
       throw new Error("No response content received from Gemini model.");
     }
 
-    const data = JSON.parse(text);
-    const validatedData = GenerateRecipeOutputSchema.parse(data);
+    const parsedJson = JSON.parse(rawResponseText);
+    const validatedData = GenerateRecipeOutputSchema.parse(parsedJson);
 
     return { success: true, data: validatedData };
-  } catch (e: any) {
-    console.error("Error generating recipe:", e);
+  } catch (caughtError: any) {
+    console.error("Error generating recipe:", caughtError);
     let errorMessage = "An unexpected error occurred while generating the recipe.";
-    if (e instanceof Error) {
-      const msg = e.message.toLowerCase();
-      if (msg.includes("api_key") || msg.includes("api key") || msg.includes("apikey")) {
+    if (caughtError instanceof Error) {
+      const errorMessageLower = caughtError.message.toLowerCase();
+      if (
+        errorMessageLower.includes("api_key") ||
+        errorMessageLower.includes("api key") ||
+        errorMessageLower.includes("apikey")
+      ) {
         errorMessage =
           "Gemini API key is not configured. Please add GOOGLE_GENAI_API_KEY to your .env file.";
       } else if (
-        msg.includes("fetch") ||
-        msg.includes("network") ||
-        msg.includes("enotfound") ||
-        msg.includes("dns") ||
-        msg.includes("connect")
+        errorMessageLower.includes("fetch") ||
+        errorMessageLower.includes("network") ||
+        errorMessageLower.includes("enotfound") ||
+        errorMessageLower.includes("dns") ||
+        errorMessageLower.includes("connect")
       ) {
         errorMessage =
           "Could not connect to the Gemini API. Please check your server's internet connection.";
       } else if (
-        msg.includes("quota") ||
-        msg.includes("limit") ||
-        msg.includes("rate") ||
-        msg.includes("429")
+        errorMessageLower.includes("quota") ||
+        errorMessageLower.includes("limit") ||
+        errorMessageLower.includes("rate") ||
+        errorMessageLower.includes("429")
       ) {
         errorMessage =
           "Gemini API quota or rate limit exceeded. Please wait a moment before trying again.";
       } else {
-        errorMessage = e.message;
+        errorMessage = caughtError.message;
       }
     }
     return { success: false, error: errorMessage };

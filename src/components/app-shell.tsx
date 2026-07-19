@@ -44,10 +44,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
     // Defer "ready" by one frame so the first position is painted before
     // we turn on the CSS transition
-    const raf = requestAnimationFrame(() => {
+    const animationFrameId = requestAnimationFrame(() => {
       setPill((prev) => ({ ...prev, ready: true }));
     });
-    return () => cancelAnimationFrame(raf);
+    return () => cancelAnimationFrame(animationFrameId);
   }, [activeIndex, pathname]);
 
   return (
@@ -79,17 +79,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               />
             )}
 
-            {links.map((link, i) => {
-              const isActive = activeIndex === i;
+            {links.map((link, linkIndex) => {
+              const isActive = activeIndex === linkIndex;
               const Icon = link.icon;
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  ref={(el) => {
-                    linkRefs.current[i] = el;
+                  ref={(linkEl) => {
+                    linkRefs.current[linkIndex] = linkEl;
                   }}
-                  style={{ "--i": i } as React.CSSProperties}
+                  style={{ "--i": linkIndex } as React.CSSProperties}
                   className={[
                     "nav-link",
                     "group relative z-10 flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium",

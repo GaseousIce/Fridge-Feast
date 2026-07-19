@@ -15,31 +15,34 @@ export default function ShoppingListPage() {
   const { toast } = useToast();
 
   const handleClearChecked = () => {
-    const checkedCount = shoppingItems.filter((i) => i.checked).length;
+    const checkedItemCount = shoppingItems.filter((shoppingItem) => shoppingItem.checked).length;
     clearCheckedShoppingItems();
     toast({
       title: "Shopping list updated",
-      description: `Cleared ${checkedCount} checked item${checkedCount !== 1 ? "s" : ""}.`,
+      description: `Cleared ${checkedItemCount} checked item${checkedItemCount !== 1 ? "s" : ""}.`,
     });
   };
 
   const grouped = useMemo(() => {
-    const map = new Map<string, { recipeName: string; items: typeof shoppingItems }>();
+    const shoppingGroupsByRecipeId = new Map<
+      string,
+      { recipeName: string; items: typeof shoppingItems }
+    >();
     for (const item of shoppingItems) {
       if (!item || !item.recipeId) continue;
-      if (!map.has(item.recipeId)) {
-        const recipe = recipes.find((r) => r.id === item.recipeId);
-        map.set(item.recipeId, {
-          recipeName: recipe?.recipeName ?? "Unknown recipe",
+      if (!shoppingGroupsByRecipeId.has(item.recipeId)) {
+        const savedRecipe = recipes.find((recipe) => recipe.id === item.recipeId);
+        shoppingGroupsByRecipeId.set(item.recipeId, {
+          recipeName: savedRecipe?.recipeName ?? "Unknown recipe",
           items: [],
         });
       }
-      map.get(item.recipeId)!.items.push(item);
+      shoppingGroupsByRecipeId.get(item.recipeId)!.items.push(item);
     }
-    return Array.from(map.entries());
+    return Array.from(shoppingGroupsByRecipeId.entries());
   }, [shoppingItems, recipes]);
 
-  const pendingCount = shoppingItems.filter((i) => !i.checked).length;
+  const pendingCount = shoppingItems.filter((shoppingItem) => !shoppingItem.checked).length;
 
   if (!recipes.length) {
     return (
@@ -140,7 +143,7 @@ export default function ShoppingListPage() {
           variant="outline"
           size="sm"
           onClick={handleClearChecked}
-          disabled={!shoppingItems.some((i) => i.checked)}
+          disabled={!shoppingItems.some((shoppingItem) => shoppingItem.checked)}
           className="animate-fade-in-up stagger-delay"
           style={{ "--i": 2 } as React.CSSProperties}
         >

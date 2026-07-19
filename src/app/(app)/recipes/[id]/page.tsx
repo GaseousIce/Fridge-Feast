@@ -52,7 +52,7 @@ export default function RecipeDetailPage({ params }: { params: Promise<{ id: str
     );
   }
 
-  const output = {
+  const recipeOutputForCard = {
     recipeName: recipe.recipeName || "Untitled Recipe",
     ingredients: recipe.ingredients || [],
     steps: recipe.steps || [],
@@ -75,7 +75,7 @@ export default function RecipeDetailPage({ params }: { params: Promise<{ id: str
       </div>
 
       <RecipeResultCard
-        recipe={output}
+        recipe={recipeOutputForCard}
         inputIngredients={recipe.inputIngredients}
         isSaved={true}
         onSave={() => {

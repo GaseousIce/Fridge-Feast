@@ -59,7 +59,9 @@ export function RecipeGenerator() {
   });
   const getValues = form.getValues;
 
-  const isSaved = recipe ? recipes.some((r) => r.recipeName === recipe.recipeName) : false;
+  const isSaved = recipe
+    ? recipes.some((savedRecipe) => savedRecipe.recipeName === recipe.recipeName)
+    : false;
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -109,8 +111,8 @@ export function RecipeGenerator() {
       } else {
         setError(result.error);
       }
-    } catch (e) {
-      console.error(e);
+    } catch (caughtError) {
+      console.error(caughtError);
       setError("Failed to generate recipe due to a network or server issue. Please try again.");
     } finally {
       setIsLoading(false);
@@ -119,7 +121,9 @@ export function RecipeGenerator() {
 
   const handleSave = useCallback(() => {
     if (!recipe) return;
-    const existingRecipe = recipes.find((r) => r.recipeName === recipe.recipeName);
+    const existingRecipe = recipes.find(
+      (savedRecipe) => savedRecipe.recipeName === recipe.recipeName,
+    );
 
     if (existingRecipe) {
       deleteRecipe(existingRecipe.id);
@@ -128,9 +132,9 @@ export function RecipeGenerator() {
         description: `"${recipe.recipeName}" has been removed from your saved recipes.`,
       });
     } else {
-      const id = crypto.randomUUID();
+      const newRecipeId = crypto.randomUUID();
       const saved: SavedRecipe = {
-        id,
+        id: newRecipeId,
         recipeName: recipe.recipeName,
         ingredients: recipe.ingredients,
         steps: recipe.steps,
@@ -140,10 +144,10 @@ export function RecipeGenerator() {
         savedAt: new Date().toISOString(),
       };
       saveRecipe(saved);
-      const shopping: ShoppingItem[] = recipe.ingredients.map((item) => ({
-        id: `${id}-${crypto.randomUUID()}`,
-        label: item,
-        recipeId: id,
+      const shopping: ShoppingItem[] = recipe.ingredients.map((ingredientText) => ({
+        id: `${newRecipeId}-${crypto.randomUUID()}`,
+        label: ingredientText,
+        recipeId: newRecipeId,
         recipeName: recipe.recipeName,
         checked: false,
       }));
