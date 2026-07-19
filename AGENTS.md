@@ -3,12 +3,16 @@
 ## Setup & commands
 
 - **Package manager: Bun only.** No npm/yarn/pnpm lockfiles exist.
-- **Dev server** runs on port **9002** (not 3000): `bun run dev`
-- **`bun run build`** runs ESLint + `tsc --noEmit` + Next build (all must pass).
-- **`bun run test`** = `vitest run` (no vitest config file; use defaults).
-- **`bun run typecheck`** = `tsc --noEmit` (separate from build).
-- **`bun run format:check`** = `prettier --check .` (verify code formatting).
-- **`bun run format:write`** = `prettier --write .` (auto-format files).
+- **`bun run dev`**: Starts the dev server on port **9002** (not 3000): `next dev --turbopack -p 9002`.
+- **`bun run build`**: Production build (runs ESLint + `tsc --noEmit` + Next build; all must pass).
+- **`bun run start`**: Starts the Next.js production server: `next start`.
+- **`bun run lint`**: Runs ESLint checks: `eslint .`.
+- **`bun run typecheck`**: Runs TypeScript type checking: `tsc --noEmit` (separate from build).
+- **`bun run test`**: Runs unit tests: `vitest run` (no Vitest config file; uses defaults).
+- **`bun run format:check`**: Verifies code formatting: `prettier --check .`.
+- **`bun run format:write`**: Auto-formats files: `prettier --write .`.
+- **`bun run genkit:dev`**: Starts the GenKit flow runner UI: `genkit start -- tsx src/ai/dev.ts`.
+- **`bun run genkit:watch`**: Starts the GenKit flow runner UI with auto-reload: `genkit start -- tsx --watch src/ai/dev.ts`.
 
 ## Required env
 
@@ -33,7 +37,8 @@
 
 ## Commits
 
-Use [Conventional Commits](https://www.conventionalcommits.org/):
+- **Do not commit changes** unless explicitly asked/instructed by the user.
+- Use [Conventional Commits](https://www.conventionalcommits.org/):
 
 - Format: `<type>(<scope>): <subject>`
 - Types: `feat`, `fix`, `test`, `refactor`, `docs`, `chore`, `style`, `perf`
