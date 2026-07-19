@@ -42,21 +42,28 @@ export default function MyRecipesPage() {
                   href={`/recipes/${recipe.id}`}
                   className="text-lg font-semibold text-foreground hover:text-primary transition-colors truncate"
                 >
-                  {recipe.recipeName}
+                  {recipe.recipeName || "Untitled Recipe"}
                 </Link>
                 <div className="flex flex-wrap items-center gap-2">
                   {recipe.cookTime && (
                     <Badge variant="secondary" className="flex items-center gap-1 text-xs">
                       <Clock className="h-3 w-3" />
-                      {recipe.cookTime}
+                      <span className="break-words">{recipe.cookTime}</span>
                     </Badge>
                   )}
                   <span className="text-xs text-muted-foreground">
-                    {recipe.ingredients.length} ingredients
+                    {Array.isArray(recipe.ingredients) ? recipe.ingredients.length : 0} ingredients
                   </span>
-                  <span className="text-xs text-muted-foreground">
-                    Saved {new Date(recipe.savedAt).toLocaleDateString()}
-                  </span>
+                  {recipe.savedAt &&
+                    (() => {
+                      const d = new Date(recipe.savedAt);
+                      if (isNaN(d.getTime())) return null;
+                      return (
+                        <span className="text-xs text-muted-foreground">
+                          Saved {d.toLocaleDateString()}
+                        </span>
+                      );
+                    })()}
                 </div>
               </div>
 

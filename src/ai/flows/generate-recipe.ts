@@ -38,8 +38,44 @@ const GenerateRecipeOutputSchema = z.object({
 });
 export type GenerateRecipeOutput = z.infer<typeof GenerateRecipeOutputSchema>;
 
-export async function generateRecipe(input: GenerateRecipeInput): Promise<GenerateRecipeOutput> {
-  return generateRecipeFlow(input);
+export type GenerateRecipeResult =
+  { success: true; data: GenerateRecipeOutput } | { success: false; error: string };
+
+export async function generateRecipe(input: GenerateRecipeInput): Promise<GenerateRecipeResult> {
+  try {
+    const result = await generateRecipeFlow(input);
+    return { success: true, data: result };
+  } catch (e: any) {
+    console.error("Error generating recipe:", e);
+    let errorMessage = "An unexpected error occurred while generating the recipe.";
+    if (e instanceof Error) {
+      const msg = e.message.toLowerCase();
+      if (msg.includes("api_key") || msg.includes("api key") || msg.includes("apikey")) {
+        errorMessage =
+          "Gemini API key is not configured. Please add GOOGLE_GENAI_API_KEY to your .env file.";
+      } else if (
+        msg.includes("fetch") ||
+        msg.includes("network") ||
+        msg.includes("enotfound") ||
+        msg.includes("dns") ||
+        msg.includes("connect")
+      ) {
+        errorMessage =
+          "Could not connect to the Gemini API. Please check your server's internet connection.";
+      } else if (
+        msg.includes("quota") ||
+        msg.includes("limit") ||
+        msg.includes("rate") ||
+        msg.includes("429")
+      ) {
+        errorMessage =
+          "Gemini API quota or rate limit exceeded. Please wait a moment before trying again.";
+      } else {
+        errorMessage = e.message;
+      }
+    }
+    return { success: false, error: errorMessage };
+  }
 }
 
 const prompt = ai.definePrompt({

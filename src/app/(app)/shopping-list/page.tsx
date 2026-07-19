@@ -15,6 +15,7 @@ export default function ShoppingListPage() {
   const grouped = useMemo(() => {
     const map = new Map<string, { recipeName: string; items: typeof shoppingItems }>();
     for (const item of shoppingItems) {
+      if (!item || !item.recipeId) continue;
       if (!map.has(item.recipeId)) {
         const recipe = recipes.find((r) => r.id === item.recipeId);
         map.set(item.recipeId, {
