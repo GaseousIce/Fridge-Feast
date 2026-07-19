@@ -43,3 +43,5 @@ graphify-out/
 # ── Environment variables ────────────────────────────────────
 .env*
 
+# ── Impeccable ──────────────────────────────────────────────
+.impeccable/
