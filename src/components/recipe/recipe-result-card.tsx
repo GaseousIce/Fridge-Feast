@@ -72,8 +72,11 @@ export function RecipeResultCard({
               Ingredients
             </h3>
             <ul className="space-y-1.5">
-              {recipe.ingredients.map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-foreground/90">
+              {recipe.ingredients.map((item, ingredientIndex) => (
+                <li
+                  key={ingredientIndex}
+                  className="flex items-start gap-2 text-sm text-foreground/90"
+                >
                   <span className="mt-1.5 block h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
                   <span className="break-words">{item}</span>
                 </li>
@@ -86,13 +89,13 @@ export function RecipeResultCard({
           <section>
             <h3 className="mb-2 text-lg font-semibold">Instructions</h3>
             <ol className="space-y-3.5">
-              {recipe.steps.map((step, i) => (
+              {recipe.steps.map((step, stepIndex) => (
                 <li
-                  key={i}
+                  key={stepIndex}
                   className="flex items-start gap-3 text-sm text-foreground/90 text-pretty max-w-[70ch]"
                 >
                   <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary mt-0.5">
-                    {i + 1}
+                    {stepIndex + 1}
                   </span>
                   <span className="break-words leading-relaxed">{step}</span>
                 </li>

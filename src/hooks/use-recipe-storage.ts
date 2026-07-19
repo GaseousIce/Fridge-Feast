@@ -60,35 +60,39 @@ export function useRecipeStorage() {
 
   const saveRecipe = useCallback((recipe: SavedRecipe) => {
     if (!recipe || !recipe.id) return;
-    setRecipes((prev) => {
-      if (prev.some((r) => r.id === recipe.id)) return prev;
-      return [recipe, ...prev];
+    setRecipes((prevRecipes) => {
+      if (prevRecipes.some((existingRecipe) => existingRecipe.id === recipe.id)) return prevRecipes;
+      return [recipe, ...prevRecipes];
     });
   }, []);
 
   const deleteRecipe = useCallback((id: string) => {
     if (!id) return;
-    setRecipes((prev) => {
-      const next = prev.filter((r) => r.id !== id);
-      return next;
+    setRecipes((prevRecipes) => {
+      const remainingRecipes = prevRecipes.filter((recipe) => recipe.id !== id);
+      return remainingRecipes;
     });
-    setShoppingItems((prev) => prev.filter((s) => s.recipeId !== id));
+    setShoppingItems((prevItems) =>
+      prevItems.filter((shoppingItem) => shoppingItem.recipeId !== id),
+    );
   }, []);
 
   const getRecipe = useCallback(
     (id: string): SavedRecipe | undefined => {
       if (!id) return undefined;
-      return recipes.find((r) => r.id === id);
+      return recipes.find((existingRecipe) => existingRecipe.id === id);
     },
     [recipes],
   );
 
   const addShoppingItems = useCallback((items: ShoppingItem[]) => {
     if (!Array.isArray(items)) return;
-    setShoppingItems((prev) => {
-      const existingIds = new Set(prev.map((i) => i.id));
-      const newItems = items.filter((i) => i && i.id && !existingIds.has(i.id));
-      return [...prev, ...newItems];
+    setShoppingItems((prevItems) => {
+      const existingItemIds = new Set(prevItems.map((shoppingItem) => shoppingItem.id));
+      const newItems = items.filter(
+        (shoppingItem) => shoppingItem && shoppingItem.id && !existingItemIds.has(shoppingItem.id),
+      );
+      return [...prevItems, ...newItems];
     });
   }, []);
 

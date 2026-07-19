@@ -58,13 +58,17 @@ export function AnimatedThemeToggle() {
   };
 
   const toggleTheme = () => {
-    const isDarkMode = resolvedTheme === "dark";
-    const newTheme = isDarkMode ? "light" : "dark";
+    const currentThemeIsDark = resolvedTheme === "dark";
+    const newTheme = currentThemeIsDark ? "light" : "dark";
 
     // Get click position relative to viewport
-    const rect = buttonRef.current?.getBoundingClientRect();
-    const centerX = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
-    const centerY = rect ? rect.top + rect.height / 2 : window.innerHeight / 2;
+    const buttonBoundingRect = buttonRef.current?.getBoundingClientRect();
+    const centerX = buttonBoundingRect
+      ? buttonBoundingRect.left + buttonBoundingRect.width / 2
+      : window.innerWidth / 2;
+    const centerY = buttonBoundingRect
+      ? buttonBoundingRect.top + buttonBoundingRect.height / 2
+      : window.innerHeight / 2;
 
     const prefersReducedMotion =
       typeof window !== "undefined" &&
@@ -107,7 +111,7 @@ export function AnimatedThemeToggle() {
     }
 
     // 3. Fallback: Custom manual transition
-    const themeChangeDelay = createSwwwCenterTransition(centerX, centerY, isDarkMode);
+    const themeChangeDelay = createSwwwCenterTransition(centerX, centerY, currentThemeIsDark);
 
     // Change theme at the perfect timing (when overlay expansion is complete)
     setTimeout(() => {

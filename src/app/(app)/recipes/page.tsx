@@ -91,14 +91,14 @@ export default function MyRecipesPage() {
                   </span>
                   {recipe.savedAt &&
                     (() => {
-                      const d = new Date(recipe.savedAt);
-                      if (isNaN(d.getTime())) return null;
+                      const savedAtDate = new Date(recipe.savedAt);
+                      if (isNaN(savedAtDate.getTime())) return null;
                       return (
                         <>
                           <span className="select-none text-muted-foreground/50" aria-hidden="true">
                             •
                           </span>
-                          <span>Saved {d.toLocaleDateString()}</span>
+                          <span>Saved {savedAtDate.toLocaleDateString()}</span>
                         </>
                       );
                     })()}
