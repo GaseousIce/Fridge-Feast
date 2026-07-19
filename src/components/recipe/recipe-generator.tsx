@@ -69,11 +69,14 @@ export function RecipeGenerator() {
     window.addEventListener("offline", handleOffline);
 
     // Initial check
-    setIsOffline(!navigator.onLine);
+    const timer = setTimeout(() => {
+      setIsOffline(!navigator.onLine);
+    }, 0);
 
     return () => {
       window.removeEventListener("online", handleOnline);
       window.removeEventListener("offline", handleOffline);
+      clearTimeout(timer);
     };
   }, []);
 
