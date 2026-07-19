@@ -23,26 +23,45 @@ export default function MyRecipesPage() {
   if (!recipes.length) {
     return (
       <div className="mx-auto flex max-w-lg flex-col items-center justify-center py-16 text-center">
-        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+        <div
+          className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 animate-fade-in-up stagger-delay"
+          style={{ "--i": 0 } as React.CSSProperties}
+        >
           <BookOpen className="h-8 w-8 text-primary" />
         </div>
-        <h2 className="mb-2 text-xl font-semibold">No saved recipes yet</h2>
-        <p className="mb-6 text-sm text-muted-foreground">
+        <h2
+          className="mb-2 text-xl font-semibold animate-fade-in-up stagger-delay"
+          style={{ "--i": 1 } as React.CSSProperties}
+        >
+          No saved recipes yet
+        </h2>
+        <p
+          className="mb-6 text-sm text-muted-foreground animate-fade-in-up stagger-delay"
+          style={{ "--i": 2 } as React.CSSProperties}
+        >
           Generate your first recipe and save it here so you never lose a good idea.
         </p>
-        <Button asChild>
-          <Link href="/">
-            <ChefHat className="mr-2 h-4 w-4" />
-            Generate a recipe
-          </Link>
-        </Button>
+        <div
+          className="animate-fade-in-up stagger-delay"
+          style={{ "--i": 3 } as React.CSSProperties}
+        >
+          <Button asChild>
+            <Link href="/">
+              <ChefHat className="mr-2 h-4 w-4" />
+              Generate a recipe
+            </Link>
+          </Button>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="mx-auto max-w-3xl">
-      <h2 className="mb-6 text-2xl font-bold tracking-tight text-balance animate-fade-in-up">
+      <h2
+        className="mb-6 text-2xl font-bold tracking-tight text-balance animate-fade-in-up stagger-delay"
+        style={{ "--i": 0 } as React.CSSProperties}
+      >
         My Recipes
       </h2>
       <div className="space-y-3">
@@ -50,7 +69,7 @@ export default function MyRecipesPage() {
           <Card
             key={recipe.id}
             className="relative overflow-hidden border border-border shadow-sm transition-all duration-300 hover:shadow-md hover:bg-secondary/20 hover:border-border/80 group animate-fade-in-up stagger-delay"
-            style={{ "--i": index } as React.CSSProperties}
+            style={{ "--i": index + 1 } as React.CSSProperties}
           >
             <div className="flex items-center gap-4 p-4 sm:p-6">
               <div className="flex min-w-0 flex-1 flex-col gap-2">

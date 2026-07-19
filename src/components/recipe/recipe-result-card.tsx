@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Bookmark, BookmarkCheck, ChefHat, Clock, Users } from "lucide-react";
+import { cn } from "@/lib/utils";
 import type { GenerateRecipeOutput } from "@/ai/flows/generate-recipe";
 
 interface RecipeResultCardProps {
@@ -11,6 +12,8 @@ interface RecipeResultCardProps {
   inputIngredients: string;
   isSaved: boolean;
   onSave: () => void;
+  className?: string;
+  style?: React.CSSProperties;
 }
 
 export function RecipeResultCard({
@@ -18,9 +21,11 @@ export function RecipeResultCard({
   inputIngredients,
   isSaved,
   onSave,
+  className,
+  style,
 }: RecipeResultCardProps) {
   return (
-    <Card className="shadow-lg animate-fade-in-up">
+    <Card className={cn("shadow-lg animate-fade-in-up", className)} style={style}>
       <CardHeader className="space-y-3">
         <div className="flex items-start justify-between gap-4">
           <h2 className="text-2xl font-bold tracking-tight text-balance break-words">
