@@ -46,14 +46,18 @@ Fridge Feast is a Next.js application that helps you generate delicious recipes 
 
 ### Other Commands
 
-| Command              | Description                                        |
-| -------------------- | -------------------------------------------------- |
-| `bun run build`      | Production build (with ESLint + TypeScript checks) |
-| `bun run start`      | Start production server                            |
-| `bun run lint`       | Run ESLint                                         |
-| `bun run typecheck`  | Run TypeScript type checking                       |
-| `bun run test`       | Run Vitest test suite                              |
-| `bun run genkit:dev` | Start GenKit flow runner for AI development        |
+| Command                | Description                                                                    |
+| ---------------------- | ------------------------------------------------------------------------------ |
+| `bun run dev`          | Start development server on port **9002** (with Turbopack)                     |
+| `bun run build`        | Production build (runs ESLint + `tsc --noEmit` + Next.js build; all must pass) |
+| `bun run start`        | Start production Next.js server                                                |
+| `bun run lint`         | Run ESLint checks                                                              |
+| `bun run typecheck`    | Run TypeScript compilation check                                               |
+| `bun run test`         | Run Vitest unit tests                                                          |
+| `bun run format:check` | Verify code formatting with Prettier                                           |
+| `bun run format:write` | Auto-format all code files with Prettier                                       |
+| `bun run genkit:dev`   | Start GenKit Developer UI / Flow Runner                                        |
+| `bun run genkit:watch` | Start GenKit Developer UI / Flow Runner with auto-reload (watch mode)          |
 
 ## Project Structure
 
@@ -61,31 +65,46 @@ Fridge Feast is a Next.js application that helps you generate delicious recipes 
 src/
 ├── ai/
 │   ├── flows/
-│   │   └── generate-recipe.ts   # AI recipe generation flow (server action)
-│   ├── dev.ts                    # GenKit dev entry point
-│   └── genkit.ts                 # GenKit initialization (Gemini 2.0 Flash)
+│   │   └── generate-recipe.ts      # AI recipe generation flow (GenKit flow)
+│   ├── dev.ts                       # GenKit dev runner entry point
+│   └── genkit.ts                    # GenKit model initialization (Gemini 2.0 Flash)
 ├── app/
-│   ├── globals.css                # Catppuccin-themed global styles
-│   ├── layout.tsx                 # Root layout (fonts, ThemeProvider, Toaster)
-│   └── page.tsx                   # Home page (logo, tagline, RecipeGenerator)
+│   ├── (app)/                       # Application routes group
+│   │   ├── recipes/                 # Saved recipes routes
+│   │   │   ├── [id]/
+│   │   │   │   └── page.tsx         # Detailed saved recipe view
+│   │   │   └── page.tsx             # List of all saved recipes
+│   │   ├── shopping-list/
+│   │   │   └── page.tsx             # Shopping list page (aggregated ingredients)
+│   │   ├── layout.tsx               # App shell layout (header/footer/navigation)
+│   │   └── page.tsx                 # Home page (Recipe Generator UI)
+│   ├── favicon.ico
+│   ├── globals.css                  # Catppuccin-themed global styles
+│   └── layout.tsx                   # Root HTML/Body layout with theme and toast providers
 ├── components/
 │   ├── recipe/
-│   │   └── recipe-generator.tsx   # Main form (react-hook-form + Zod validation)
-│   ├── animated-theme-toggle.tsx   # Circular-overlay theme toggle (animejs)
-│   ├── theme-toggle-switch.tsx     # Simple slide-toggle component
-│   └── ui/                         # shadcn/ui components (30+)
+│   │   ├── recipe-generator-lazy.tsx # Dynamic import wrapper for generator component
+│   │   ├── recipe-generator.tsx      # Main recipe generator form and logic
+│   │   └── recipe-result-card.tsx    # Card displaying generated recipe output
+│   ├── animated-theme-toggle.tsx     # Custom Anime.js circular overlay theme toggle
+│   ├── app-shell.tsx                 # Base page shell with navigation layout
+│   └── ui/                           # Committed shadcn/ui base components (33)
 ├── hooks/
-│   ├── use-mobile.tsx              # Mobile breakpoint detection
-│   └── use-toast.ts                # Toast notification system
+│   ├── use-mobile.tsx                # Mobile breakpoint detection hook
+│   ├── use-recipe-storage.ts         # localStorage management hook for recipes & shopping list
+│   └── use-toast.ts                  # shadcn/ui toast notifications hook
 └── lib/
-    └── utils.ts                    # cn() utility (clsx + tailwind-merge)
+    ├── types.ts                      # Core TypeScript definitions (SavedRecipe, ShoppingItem, etc.)
+    ├── utils.test.ts                 # Unit tests for helper utilities
+    └── utils.ts                      # Tailwind CSS class merger utility (cn)
 ```
 
 ## Key Files
 
-- **`src/app/page.tsx`** — Main application entry point
-- **`src/components/recipe/recipe-generator.tsx`** — Recipe generation form and result display
-- **`src/ai/flows/generate-recipe.ts`** — AI recipe generation logic (GenKit flow)
+- **`src/app/(app)/page.tsx`** — Main application landing and recipe generation page
+- **`src/components/recipe/recipe-generator.tsx`** — Recipe generator form component
+- **`src/hooks/use-recipe-storage.ts`** — LocalStorage management hook for recipes and shopping items
+- **`src/ai/flows/generate-recipe.ts`** — AI recipe generation flow (using Gemini 2.0 Flash)
 - **`src/ai/genkit.ts`** — GenKit initialization and model configuration
 
 ## Testing
@@ -96,19 +115,19 @@ The project uses [Vitest](https://vitest.dev) for testing:
 bun run test
 ```
 
-Tests cover the `cn()` utility and the toast notification reducer.
+Tests cover the `cn()` utility and the toast notification hooks.
 
 ## Built With
 
 - **Framework:** Next.js 15 (with Turbopack)
 - **Language:** TypeScript
-- **Styling:** Tailwind CSS, shadcn/ui, Catppuccin theme
+- **Styling:** Tailwind CSS, shadcn/ui, Catppuccin theme (Latte light & Mocha dark)
 - **AI:** GenKit, Google Gemini 2.0 Flash
-- **Forms:** react-hook-form, Zod
-- **Animation:** animejs
-- **State:** TanStack Query, Firebase
+- **Forms:** react-hook-form, Zod validation
+- **Animation:** Anime.js
+- **State/Storage:** React State, Browser LocalStorage
 - **Testing:** Vitest
-- **Dev Tools:** GenKit CLI, ESLint
+- **Dev Tools:** GenKit CLI, ESLint, Prettier
 
 ## Feedback
 
