@@ -81,7 +81,7 @@ export function AnimatedThemeToggle() {
     if (typeof document !== "undefined" && (document as any).startViewTransition) {
       const maxRadius = Math.hypot(
         Math.max(centerX, window.innerWidth - centerX),
-        Math.max(centerY, window.innerHeight - centerY)
+        Math.max(centerY, window.innerHeight - centerY),
       );
 
       document.documentElement.style.setProperty("--x", `${centerX}px`);
