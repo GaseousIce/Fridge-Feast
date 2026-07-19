@@ -7,6 +7,8 @@
 - **`bun run build`** runs ESLint + `tsc --noEmit` + Next build (all must pass).
 - **`bun run test`** = `vitest run` (no vitest config file; use defaults).
 - **`bun run typecheck`** = `tsc --noEmit` (separate from build).
+- **`bun run format:check`** = `prettier --check .` (verify code formatting).
+- **`bun run format:write`** = `prettier --write .` (auto-format files).
 
 ## Required env
 
@@ -41,7 +43,7 @@ Use [Conventional Commits](https://www.conventionalcommits.org/):
 
 ## Notable
 
-- No CI, no pre-commit hooks, no formatter (Prettier) configured.
+- No CI, no pre-commit hooks. Prettier is used for formatting.
 - shadcn/ui components are committed (33 of them). Do not regenerate via CLI.
 - Catppuccin theme via CSS variables in `tailwind.config.ts` (latte light / mocha dark). `globals.css` includes GPU-accelerated theme transitions (`transform: translateZ(0)`, etc.).
 - Build fails on any TS or ESLint error (`next.config.ts`: `ignoreBuildErrors: false`, `ignoreDuringBuilds: false`).
