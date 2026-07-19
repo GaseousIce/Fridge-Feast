@@ -238,7 +238,7 @@ export function RecipeGenerator() {
                 </Alert>
               )}
 
-              <Button type="submit" className="w-full" disabled={isLoading || isOffline}>
+              <Button type="submit" className="w-full group" disabled={isLoading || isOffline}>
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -251,7 +251,7 @@ export function RecipeGenerator() {
                   </>
                 ) : (
                   <>
-                    <Sparkles className="mr-2 h-4 w-4" />
+                    <Sparkles className="mr-2 h-4 w-4 group-hover:rotate-12 transition-transform duration-300" />
                     Generate Recipe
                     <kbd className="ml-2 hidden rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100 sm:inline-block">
                       <span className="text-xs">⌘</span> Enter
@@ -271,18 +271,18 @@ export function RecipeGenerator() {
       </div>
 
       {isLoading && (
-        <Card className="shadow-lg">
+        <Card className="shadow-lg animate-fade-in">
           <CardContent className="flex items-center justify-center py-12">
-            <div className="flex flex-col items-center gap-3 text-muted-foreground">
+            <div className="flex flex-col items-center gap-3 text-muted-foreground animate-pulse duration-1000">
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
-              <p className="text-sm">Cooking up something delicious...</p>
+              <p className="text-sm font-medium">Cooking up something delicious...</p>
             </div>
           </CardContent>
         </Card>
       )}
 
       {error && (
-        <Alert variant="destructive" className="shadow-md">
+        <Alert variant="destructive" className="shadow-md animate-shake">
           <AlertTriangle className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
           <AlertDescription className="flex flex-col gap-3">
