@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { useTheme } from "next-themes";
-import { animate as anime } from "animejs";
 import { flushSync } from "react-dom";
 
 export function AnimatedThemeToggle() {
@@ -96,16 +95,13 @@ export function AnimatedThemeToggle() {
 
       // Scale bounce click feedback
       if (buttonRef.current) {
-        anime(buttonRef.current, {
-          scale: [1, 1.15, 1],
-          duration: 300,
-          easing: "easeOutQuart",
-          complete: () => {
-            if (buttonRef.current) {
-              buttonRef.current.style.transform = "";
-            }
+        buttonRef.current.animate(
+          [{ transform: "scale(1)" }, { transform: "scale(1.15)" }, { transform: "scale(1)" }],
+          {
+            duration: 300,
+            easing: "cubic-bezier(0.25, 1, 0.5, 1)",
           },
-        });
+        );
       }
       return;
     }
@@ -138,16 +134,13 @@ export function AnimatedThemeToggle() {
 
     // Button animation for fallback
     if (buttonRef.current) {
-      anime(buttonRef.current, {
-        scale: [1, 1.15, 1],
-        duration: 300,
-        easing: "easeOutQuart",
-        complete: () => {
-          if (buttonRef.current) {
-            buttonRef.current.style.transform = "";
-          }
+      buttonRef.current.animate(
+        [{ transform: "scale(1)" }, { transform: "scale(1.15)" }, { transform: "scale(1)" }],
+        {
+          duration: 300,
+          easing: "cubic-bezier(0.25, 1, 0.5, 1)",
         },
-      });
+      );
     }
   };
 
