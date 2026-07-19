@@ -90,6 +90,7 @@ The system rests on a cool neutral body background (Latte's `#eff1f5`, Mocha's `
 What this system explicitly rejects: sterile white meal-plan dashboards, dark "pro chef" apps, glassmorphism, gradient text, the SaaS card-grid-everywhere template, and any aesthetic that signals "AI" before it signals "kitchen."
 
 **Key Characteristics:**
+
 - Cool-toned neutral canvas with warm pastel accents used sparingly
 - Light mode (Latte) and dark mode (Mocha) are equal citizens, switched via a circular-reveal "swww-style" transition
 - Catppuccin's signature pastel palette is the accent range — peach, rosewater, mauve, lavender, green — each with a named role

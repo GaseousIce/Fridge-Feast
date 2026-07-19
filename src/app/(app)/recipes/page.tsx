@@ -36,8 +36,8 @@ export default function MyRecipesPage() {
       <div className="space-y-3">
         {recipes.map((recipe) => (
           <Card key={recipe.id} className="shadow-sm transition-shadow hover:shadow-md">
-            <div className="flex items-center gap-4 p-4 sm:px-6">
-              <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+            <div className="flex items-center gap-4 p-4 sm:p-6">
+              <div className="flex min-w-0 flex-1 flex-col gap-2">
                 <Link
                   href={`/recipes/${recipe.id}`}
                   className="text-lg font-semibold text-foreground hover:text-primary transition-colors truncate"

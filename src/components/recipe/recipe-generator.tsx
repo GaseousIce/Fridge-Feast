@@ -56,9 +56,7 @@ export function RecipeGenerator() {
   });
   const getValues = form.getValues;
 
-  const isSaved = recipe
-    ? recipes.some((r) => r.recipeName === recipe.recipeName)
-    : false;
+  const isSaved = recipe ? recipes.some((r) => r.recipeName === recipe.recipeName) : false;
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {

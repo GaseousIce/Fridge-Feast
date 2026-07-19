@@ -1,7 +1,32 @@
+# ── Agent & skill directories ──
+.agents
+.impeccable
+.Jules
+.opencode
+
+# ── Project config & CI directories ──
+.github
+.git
+.idx
+.vscode
+
+# ── Environment & tool config files ──
+.env*
+.gitignore
+.prettierignore
+.prettierrc
+.modified
+
+# ── Build & dependency directories ──
 .next
+.vercel
 graphify-out
 node_modules
+
+# ── Generated / auto‑generated files ──
 next-env.d.ts
-.vercel
-.env*
+tsconfig.tsbuildinfo
+
+# ── Lockfiles ──
 *.lock
+bun.lock
