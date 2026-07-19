@@ -1,4 +1,4 @@
-import { RecipeGenerator } from "@/components/recipe/recipe-generator-lazy";
+import { RecipeGenerator } from "@/components/recipe/recipe-generator";
 import { FridgeFeastLogo } from "@/components/icons/fridge-feast-logo";
 
 export default function Home() {
