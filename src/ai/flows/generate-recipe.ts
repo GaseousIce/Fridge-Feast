@@ -1,14 +1,10 @@
 "use server";
 /**
- * @fileOverview Recipe generation AI agent.
- *
- * - generateRecipe - A function that handles the recipe generation process.
- * - GenerateRecipeInput - The input type for the generateRecipe function.
- * - GenerateRecipeOutput - The return type for the generateRecipe function.
+ * @fileOverview Recipe generation AI agent using the official @google/genai SDK.
  */
 
-import { ai } from "@/ai/genkit";
-import { z } from "genkit";
+import { GoogleGenAI } from "@google/genai";
+import { z } from "zod";
 
 const GenerateRecipeInputSchema = z.object({
   ingredients: z.string().describe("A comma separated list of ingredients available."),
@@ -41,10 +37,82 @@ export type GenerateRecipeOutput = z.infer<typeof GenerateRecipeOutputSchema>;
 export type GenerateRecipeResult =
   { success: true; data: GenerateRecipeOutput } | { success: false; error: string };
 
+const recipeResponseSchema = {
+  type: "object",
+  properties: {
+    recipeName: {
+      type: "string",
+      description: "The name of the recipe.",
+    },
+    ingredients: {
+      type: "array",
+      items: { type: "string" },
+      description: "List of ingredients with quantities, one per item.",
+    },
+    steps: {
+      type: "array",
+      items: { type: "string" },
+      description: "Step-by-step cooking instructions, each step as a separate string.",
+    },
+    cookTime: {
+      type: "string",
+      description: "The estimated cook time for the recipe.",
+    },
+    servings: {
+      type: "number",
+      description: "Number of servings the recipe yields.",
+    },
+  },
+  required: ["recipeName", "ingredients", "steps", "cookTime", "servings"],
+};
+
 export async function generateRecipe(input: GenerateRecipeInput): Promise<GenerateRecipeResult> {
   try {
-    const result = await generateRecipeFlow(input);
-    return { success: true, data: result };
+    const apiKey = process.env.GOOGLE_GENAI_API_KEY;
+    if (!apiKey) {
+      throw new Error(
+        "Gemini API key is not configured. Please add GOOGLE_GENAI_API_KEY to your .env file.",
+      );
+    }
+
+    const ai = new GoogleGenAI({ apiKey });
+
+    const promptText = `You are a world class chef.
+
+You will generate a recipe based on the ingredients available.
+
+Ingredients: ${input.ingredients}
+${input.dietaryRestrictions ? `Dietary Restrictions: ${input.dietaryRestrictions}` : ""}
+${input.cuisine ? `Cuisine: ${input.cuisine}` : ""}
+${input.difficulty ? `Difficulty: ${input.difficulty}` : ""}
+
+Return a JSON object with the following fields:
+- recipeName: the name of the recipe
+- ingredients: array of ingredient strings with quantities
+- steps: array of step-by-step instruction strings
+- cookTime: estimated cook time as a string (e.g. "25 min")
+- servings: number of servings
+
+Recipe:`;
+
+    const response = await ai.models.generateContent({
+      model: "gemini-1.5-flash",
+      contents: promptText,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: recipeResponseSchema as any,
+      },
+    });
+
+    const text = response.text;
+    if (!text) {
+      throw new Error("No response content received from Gemini model.");
+    }
+
+    const data = JSON.parse(text);
+    const validatedData = GenerateRecipeOutputSchema.parse(data);
+
+    return { success: true, data: validatedData };
   } catch (e: any) {
     console.error("Error generating recipe:", e);
     let errorMessage = "An unexpected error occurred while generating the recipe.";
@@ -77,38 +145,3 @@ export async function generateRecipe(input: GenerateRecipeInput): Promise<Genera
     return { success: false, error: errorMessage };
   }
 }
-
-const prompt = ai.definePrompt({
-  name: "generateRecipePrompt",
-  input: { schema: GenerateRecipeInputSchema },
-  output: { schema: GenerateRecipeOutputSchema },
-  prompt: `You are a world class chef.
-
-You will generate a recipe based on the ingredients available.
-
-Ingredients: {{{ingredients}}}
-{{#if dietaryRestrictions}}Dietary Restrictions: {{{dietaryRestrictions}}}{{/if}}
-{{#if cuisine}}Cuisine: {{{cuisine}}}{{/if}}
-{{#if difficulty}}Difficulty: {{{difficulty}}}{{/if}}
-
-Return a JSON object with the following fields:
-- recipeName: the name of the recipe
-- ingredients: array of ingredient strings with quantities
-- steps: array of step-by-step instruction strings
-- cookTime: estimated cook time as a string (e.g. "25 min")
-- servings: number of servings
-
-Recipe:`,
-});
-
-const generateRecipeFlow = ai.defineFlow(
-  {
-    name: "generateRecipeFlow",
-    inputSchema: GenerateRecipeInputSchema,
-    outputSchema: GenerateRecipeOutputSchema,
-  },
-  async (input) => {
-    const { output } = await prompt(input);
-    return output!;
-  },
-);
