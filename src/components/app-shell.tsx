@@ -51,7 +51,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   }, [activeIndex, pathname]);
 
   return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground">
+    <div
+      className="flex min-h-screen flex-col bg-background text-foreground"
+      style={{
+        transform: "translateZ(0)",
+        backfaceVisibility: "hidden",
+        perspective: "1000px",
+      }}
+    >
       <header className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-sm">
         <div className="mx-auto flex h-14 max-w-5xl items-center gap-4 px-4 sm:px-6">
           <Link
