@@ -67,21 +67,6 @@ body {
     --ring: var(--ctp-blue); /* Latte blue for ring */
 
     --radius: 0.5rem;
-
-    --chart-1: var(--ctp-red);
-    --chart-2: var(--ctp-blue);
-    --chart-3: var(--ctp-green);
-    --chart-4: var(--ctp-yellow);
-    --chart-5: var(--ctp-pink);
-
-    --sidebar-background: var(--ctp-crust);
-    --sidebar-foreground: var(--ctp-text);
-    --sidebar-primary: var(--ctp-blue);
-    --sidebar-primary-foreground: var(--ctp-crust);
-    --sidebar-accent: var(--ctp-surface0);
-    --sidebar-accent-foreground: var(--ctp-text);
-    --sidebar-border: var(--ctp-surface1);
-    --sidebar-ring: var(--ctp-blue);
   }
 
   .dark {
@@ -142,21 +127,6 @@ body {
     --border: var(--ctp-surface1); /* Mocha surface1 */
     --input: var(--ctp-surface0); /* Mocha surface0 */
     --ring: var(--ctp-blue); /* Mocha blue for ring */
-
-    --chart-1: var(--ctp-red);
-    --chart-2: var(--ctp-blue);
-    --chart-3: var(--ctp-green);
-    --chart-4: var(--ctp-yellow);
-    --chart-5: var(--ctp-pink);
-
-    --sidebar-background: var(--ctp-crust);
-    --sidebar-foreground: var(--ctp-text);
-    --sidebar-primary: var(--ctp-blue);
-    --sidebar-primary-foreground: var(--ctp-crust);
-    --sidebar-accent: var(--ctp-surface0);
-    --sidebar-accent-foreground: var(--ctp-text);
-    --sidebar-border: var(--ctp-surface1);
-    --sidebar-ring: var(--ctp-blue);
   }
 }
 
@@ -285,42 +255,7 @@ button:hover kbd {
   }
 }
 
-/* ── Responsive table helpers ────────────────────────────────── */
-@media (max-width: 640px) {
-  .responsive-table {
-    display: block;
-  }
-  .responsive-table thead {
-    display: none;
-  }
-  .responsive-table tr {
-    display: block;
-    margin-bottom: 0.75rem;
-    border: 1px solid hsl(var(--border));
-    border-radius: var(--radius);
-    padding: 0.75rem;
-  }
-  .responsive-table td {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.25rem 0;
-    border: none;
-  }
-  .responsive-table td::before {
-    content: attr(data-label);
-    font-weight: 500;
-    color: hsl(var(--muted-foreground));
-    font-size: 0.8125rem;
-  }
-}
-
 /* ── Prevent pull-to-refresh on mobile (opt-in on main) ──────── */
 .overscroll-none {
   overscroll-behavior: none;
-}
-
-/* ── Line length cap for prose ───────────────────────────────── */
-.prose-capped {
-  max-width: 70ch;
 }

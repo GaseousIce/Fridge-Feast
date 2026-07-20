@@ -80,7 +80,6 @@ export default function RecipeDetailPage({ params }: { params: Promise<{ id: str
 
       <RecipeResultCard
         recipe={recipeOutputForCard}
-        inputIngredients={recipe.inputIngredients}
         isSaved={true}
         onSave={() => {
           deleteRecipe(id);
