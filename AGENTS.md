@@ -14,14 +14,14 @@
 
 ## Required env
 
-`GOOGLE_GENAI_API_KEY` in `.env` (gitignored). Without it, recipe generation will fail at runtime.
+`GROQ_API_KEY` in `.env` (gitignored). Without it, recipe generation will fail at runtime.
 
 ## Architecture
 
 - Single Next.js 15 App Router app (not a monorepo).
 - Path alias `@/*` → `./src/*`.
 - **Entrypoints:** `src/app/page.tsx` (home), `src/app/layout.tsx` (root layout), `src/ai/flows/generate-recipe.ts` (recipe generation endpoint).
-- **Recipe generation** uses `@google/genai` SDK with Gemini 1.5 Flash.
+- **Recipe generation** uses `openai` SDK (OpenAI-compatible) pointed at Groq's API with `openai/gpt-oss-120b`.
 - **Two theme toggle components** exist (`animated-theme-toggle.tsx`, `theme-toggle-switch.tsx`); only `AnimatedThemeToggle` is wired up.
 
 ## Testing

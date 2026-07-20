@@ -1,9 +1,6 @@
 "use server";
-/**
- * @fileOverview Recipe generation AI agent using the official @google/genai SDK.
- */
 
-import { GoogleGenAI } from "@google/genai";
+import OpenAI from "openai";
 import { z } from "zod";
 
 const GenerateRecipeInputSchema = z.object({
@@ -37,13 +34,10 @@ export type GenerateRecipeOutput = z.infer<typeof GenerateRecipeOutputSchema>;
 export type GenerateRecipeResult =
   { success: true; data: GenerateRecipeOutput } | { success: false; error: string };
 
-const recipeResponseSchema = {
+const recipeSchema = {
   type: "object",
   properties: {
-    recipeName: {
-      type: "string",
-      description: "The name of the recipe.",
-    },
+    recipeName: { type: "string", description: "The name of the recipe." },
     ingredients: {
       type: "array",
       items: { type: "string" },
@@ -54,59 +48,50 @@ const recipeResponseSchema = {
       items: { type: "string" },
       description: "Step-by-step cooking instructions, each step as a separate string.",
     },
-    cookTime: {
-      type: "string",
-      description: "The estimated cook time for the recipe.",
-    },
-    servings: {
-      type: "number",
-      description: "Number of servings the recipe yields.",
-    },
+    cookTime: { type: "string", description: "The estimated cook time for the recipe." },
+    servings: { type: "number", description: "Number of servings the recipe yields." },
   },
   required: ["recipeName", "ingredients", "steps", "cookTime", "servings"],
 };
 
 export async function generateRecipe(input: GenerateRecipeInput): Promise<GenerateRecipeResult> {
   try {
-    const apiKey = process.env.GOOGLE_GENAI_API_KEY;
+    const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) {
-      throw new Error(
-        "Gemini API key is not configured. Please add GOOGLE_GENAI_API_KEY to your .env file.",
-      );
+      throw new Error("Groq API key is not configured. Please add GROQ_API_KEY to your .env file.");
     }
 
-    const genaiClient = new GoogleGenAI({ apiKey });
+    const client = new OpenAI({
+      apiKey,
+      baseURL: "https://api.groq.com/openai/v1",
+    });
 
-    const promptText = `You are a world class chef.
+    const systemPrompt = `You are a world class chef. Generate a recipe based on the ingredients and preferences provided. Respond in JSON.`;
 
-You will generate a recipe based on the ingredients available.
-
+    const userPrompt = `Generate a recipe with the following:
 Ingredients: ${input.ingredients}
 ${input.dietaryRestrictions ? `Dietary Restrictions: ${input.dietaryRestrictions}` : ""}
 ${input.cuisine ? `Cuisine: ${input.cuisine}` : ""}
-${input.difficulty ? `Difficulty: ${input.difficulty}` : ""}
+${input.difficulty ? `Difficulty: ${input.difficulty}` : ""}`;
 
-Return a JSON object with the following fields:
-- recipeName: the name of the recipe
-- ingredients: array of ingredient strings with quantities
-- steps: array of step-by-step instruction strings
-- cookTime: estimated cook time as a string (e.g. "25 min")
-- servings: number of servings
-
-Recipe:`;
-
-    const response = await genaiClient.models.generateContent({
-      model: "gemini-1.5-flash",
-      contents: promptText,
-      config: {
-        responseMimeType: "application/json",
-        responseSchema: recipeResponseSchema as any,
-      },
+    const response = await client.chat.completions.create({
+      model: "openai/gpt-oss-120b",
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt },
+      ],
+      response_format: {
+        type: "json_schema",
+        json_schema: {
+          name: "recipe",
+          schema: recipeSchema,
+        },
+      } as any,
     });
 
-    const rawResponseText = response.text;
+    const rawResponseText = response.choices[0]?.message?.content;
     if (!rawResponseText) {
-      throw new Error("No response content received from Gemini model.");
+      throw new Error("No response content received from Groq model.");
     }
 
     const parsedJson = JSON.parse(rawResponseText);
@@ -123,8 +108,7 @@ Recipe:`;
         errorMessageLower.includes("api key") ||
         errorMessageLower.includes("apikey")
       ) {
-        errorMessage =
-          "Gemini API key is not configured. Please add GOOGLE_GENAI_API_KEY to your .env file.";
+        errorMessage = "Groq API key is not configured. Please add GROQ_API_KEY to your .env file.";
       } else if (
         errorMessageLower.includes("fetch") ||
         errorMessageLower.includes("network") ||
@@ -133,7 +117,7 @@ Recipe:`;
         errorMessageLower.includes("connect")
       ) {
         errorMessage =
-          "Could not connect to the Gemini API. Please check your server's internet connection.";
+          "Could not connect to the Groq API. Please check your server's internet connection.";
       } else if (
         errorMessageLower.includes("quota") ||
         errorMessageLower.includes("limit") ||
@@ -141,7 +125,7 @@ Recipe:`;
         errorMessageLower.includes("429")
       ) {
         errorMessage =
-          "Gemini API quota or rate limit exceeded. Please wait a moment before trying again.";
+          "Groq API quota or rate limit exceeded. Please wait a moment before trying again.";
       } else {
         errorMessage = caughtError.message;
       }
