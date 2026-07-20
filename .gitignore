@@ -44,5 +44,8 @@ graphify-out/
 .env*
 !.env.example
 
+# ── IDX (Project IDX) ───────────────────────────────────────
+.idx/
+
 # ── Impeccable ──────────────────────────────────────────────
 .impeccable/
