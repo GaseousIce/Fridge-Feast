@@ -1,115 +1,150 @@
-# Fridge Feast
+<p align="center">
+  <img src="public/logo.svg" alt="Fridge Feast" width="80" height="80" />
+</p>
 
-Fridge Feast is a Next.js application that helps you generate delicious recipes based on the ingredients you have on hand. Say goodbye to food waste and hello to creativity in your kitchen!
+<h1 align="center">Fridge Feast</h1>
 
-## Core Features
+<p align="center">
+  Turn your leftover ingredients into delicious meals — just tell us what you have.
+</p>
 
-- **AI Recipe Generation:** Get unique recipe names and step-by-step instructions tailored to your available ingredients using Google Gemini via GenKit.
-- **Ingredient Input:** Easily list the ingredients you have in a simple textarea.
-- **Recipe Display:** View the generated recipe clearly, including the name, detailed instructions, and estimated cook time.
-- **Customization:** Optionally specify dietary restrictions, preferred cuisine, and difficulty level to get more personalized recipes.
-- **Dark/Light Theme:** Catppuccin-themed UI with a smooth animated theme toggle.
-- **Keyboard Shortcuts:** Press `Cmd+Enter` or `Ctrl+Enter` to generate a recipe quickly.
-- **Accessibility:** Screen-reader-friendly live regions and ARIA-compliant interactive elements.
+<p align="center">
+  <a href="https://github.com/GaseousIce/Fridge-Feast/actions/workflows/check.yml">
+    <img src="https://github.com/GaseousIce/Fridge-Feast/actions/workflows/check.yml/badge.svg" alt="CI" />
+  </a>
+  <a href="/LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License" />
+  </a>
+  <a href="https://nextjs.org">
+    <img src="https://img.shields.io/badge/Next.js-16-black?logo=next.js" alt="Next.js" />
+  </a>
+  <a href="https://bun.sh">
+    <img src="https://img.shields.io/badge/Bun-black?logo=bun" alt="Bun" />
+  </a>
+  <a href="https://www.typescriptlang.org">
+    <img src="https://img.shields.io/badge/TypeScript-blue?logo=typescript" alt="TypeScript" />
+  </a>
+  <a href="https://github.com/GaseousIce/Fridge-Feast/issues">
+    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome" />
+  </a>
+</p>
+
+---
+
+## Screenshots
+
+<table>
+  <tr>
+    <td width="50%">
+      <img src="public/screenshots/screenshot-light.png" alt="Fridge Feast in light mode" width="100%" />
+    </td>
+    <td width="50%">
+      <img src="public/screenshots/screenshot-dark.png" alt="Fridge Feast in dark mode" width="100%" />
+    </td>
+  </tr>
+</table>
+
+<p align="center">
+  <img src="public/screenshots/recipe-result.png" alt="Recipe result example" width="65%" />
+</p>
+
+## Features
+
+- **AI Recipe Generation** — Get unique recipes tailored to your available ingredients
+- **Ingredient Input** — List what you have in a simple textarea, add optional dietary restrictions, cuisine preference, and difficulty level
+- **Catppuccin Theme** — Beautiful latte (light) and mocha (dark) themes with a smooth animated toggle
+- **Recipe Storage** — Save generated recipes and auto-aggregate ingredients into a shopping list
+- **Keyboard Shortcuts** — Press `Ctrl+Enter` / `Cmd+Enter` to generate a recipe instantly
+- **Accessible** — ARIA-compliant with screen-reader-friendly live regions
 
 ## Getting Started
 
 ### Prerequisites
 
 - [Bun](https://bun.sh) (package manager)
-- A Google AI API key (for recipe generation) — set it as `GOOGLE_GENAI_API_KEY` in a `.env` file.
 
 ### Setup
 
-1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/GaseousIce/Fridge-Feast.git
-    cd Fridge-Feast
-    ```
-2.  **Install dependencies:**
-    ```bash
-    bun install
-    ```
-3.  **Set up environment variables:**
+```bash
+# Clone the repository
+git clone https://github.com/GaseousIce/Fridge-Feast.git
+cd Fridge-Feast
 
-    ```bash
-    cp .env.example .env
-    ```
+# Install dependencies
+bun install
 
-    Then add your `GOOGLE_GENAI_API_KEY` to `.env`.
+# Set up environment variables
+cp .env.example .env
+# Then add your GROQ_API_KEY to .env
 
-4.  **Run the development server:**
-    ```bash
-    bun run dev
-    ```
-    The app runs on [http://localhost:9002](http://localhost:9002).
+# Start the development server
+bun run dev
+```
 
-### Other Commands
+The app runs on [http://localhost:9002](http://localhost:9002).
 
-| Command                | Description                                                                    |
-| ---------------------- | ------------------------------------------------------------------------------ |
-| `bun run dev`          | Start development server on port **9002** (with Turbopack)                     |
-| `bun run build`        | Production build (runs ESLint + `tsc --noEmit` + Next.js build; all must pass) |
-| `bun run start`        | Start production Next.js server                                                |
-| `bun run lint`         | Run ESLint checks                                                              |
-| `bun run typecheck`    | Run TypeScript compilation check                                               |
-| `bun run test`         | Run Vitest unit tests                                                          |
-| `bun run format:check` | Verify code formatting with Prettier                                           |
-| `bun run format:write` | Auto-format all code files with Prettier                                       |
-| `bun run genkit:dev`   | Start GenKit Developer UI / Flow Runner                                        |
-| `bun run genkit:watch` | Start GenKit Developer UI / Flow Runner with auto-reload (watch mode)          |
+### Commands
+
+| Command                | Description                                                |
+| ---------------------- | ---------------------------------------------------------- |
+| `bun run dev`          | Start dev server on port **9002** (with Turbopack)         |
+| `bun run build`        | Production build (ESLint + `tsc --noEmit` + Next.js build) |
+| `bun run start`        | Start production server                                    |
+| `bun run lint`         | Run ESLint checks                                          |
+| `bun run typecheck`    | Run TypeScript compilation check                           |
+| `bun run test`         | Run Vitest unit tests                                      |
+| `bun run format:check` | Verify code formatting with Prettier                       |
+| `bun run format:write` | Auto-format all code files with Prettier                   |
 
 ## Project Structure
 
 ```
 src/
 ├── ai/
-│   ├── flows/
-│   │   └── generate-recipe.ts      # AI recipe generation flow (GenKit flow)
-│   ├── dev.ts                       # GenKit dev runner entry point
-│   └── genkit.ts                    # GenKit model initialization (Gemini 2.0 Flash)
+│   └── flows/
+│       └── generate-recipe.ts   # AI recipe generation (OpenAI SDK → Groq)
 ├── app/
-│   ├── (app)/                       # Application routes group
-│   │   ├── recipes/                 # Saved recipes routes
-│   │   │   ├── [id]/
-│   │   │   │   └── page.tsx         # Detailed saved recipe view
-│   │   │   └── page.tsx             # List of all saved recipes
-│   │   ├── shopping-list/
-│   │   │   └── page.tsx             # Shopping list page (aggregated ingredients)
-│   │   ├── layout.tsx               # App shell layout (header/footer/navigation)
-│   │   └── page.tsx                 # Home page (Recipe Generator UI)
+│   ├── (app)/                    # Application routes
+│   │   ├── recipes/
+│   │   │   ├── [id]/              # Individual recipe view
+│   │   │   └── page.tsx           # Saved recipes list
+│   │   ├── shopping-list/        # Aggregated shopping list
+│   │   ├── layout.tsx            # App shell layout
+│   │   └── page.tsx              # Recipe generator home page
 │   ├── favicon.ico
-│   ├── globals.css                  # Catppuccin-themed global styles
-│   └── layout.tsx                   # Root HTML/Body layout with theme and toast providers
+│   ├── globals.css               # Catppuccin theme variables
+│   └── layout.tsx                # Root layout (theme + toast providers)
 ├── components/
+│   ├── icons/
+│   │   └── fridge-feast-logo.tsx # Brand logo component
 │   ├── recipe/
-│   │   ├── recipe-generator-lazy.tsx # Dynamic import wrapper for generator component
-│   │   ├── recipe-generator.tsx      # Main recipe generator form and logic
-│   │   └── recipe-result-card.tsx    # Card displaying generated recipe output
-│   ├── animated-theme-toggle.tsx     # Custom Anime.js circular overlay theme toggle
-│   ├── app-shell.tsx                 # Base page shell with navigation layout
-│   └── ui/                           # Committed shadcn/ui base components (33)
+│   │   ├── recipe-generator.tsx   # Main generator form
+│   │   └── recipe-result-card.tsx # Generated recipe display
+│   ├── animated-theme-toggle.tsx  # Circular-reveal theme toggle
+│   ├── app-shell.tsx             # Navigation shell
+│   └── ui/                       # shadcn/ui primitives (12)
 ├── hooks/
-│   ├── use-mobile.tsx                # Mobile breakpoint detection hook
-│   ├── use-recipe-storage.ts         # localStorage management hook for recipes & shopping list
-│   └── use-toast.ts                  # shadcn/ui toast notifications hook
+│   ├── use-recipe-storage.ts     # localStorage for recipes & shopping list
+│   └── use-toast.ts              # Toast notification hook
 └── lib/
-    ├── types.ts                      # Core TypeScript definitions (SavedRecipe, ShoppingItem, etc.)
-    ├── utils.test.ts                 # Unit tests for helper utilities
-    └── utils.ts                      # Tailwind CSS class merger utility (cn)
+    ├── types.ts                  # TypeScript definitions
+    ├── utils.ts                  # Tailwind class merger (cn)
+    └── utils.test.ts             # Utility tests
 ```
 
-## Key Files
+## Built With
 
-- **`src/app/(app)/page.tsx`** — Main application landing and recipe generation page
-- **`src/components/recipe/recipe-generator.tsx`** — Recipe generator form component
-- **`src/hooks/use-recipe-storage.ts`** — LocalStorage management hook for recipes and shopping items
-- **`src/ai/flows/generate-recipe.ts`** — AI recipe generation flow (using Gemini 2.0 Flash)
-- **`src/ai/genkit.ts`** — GenKit initialization and model configuration
+- **Framework:** Next.js 16 (Turbopack)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS, shadcn/ui, Catppuccin theme (Latte & Mocha)
+- **AI:** OpenAI SDK → Groq API (`openai/gpt-oss-120b`)
+- **Forms:** react-hook-form, Zod validation
+- **Icons:** Lucide React
+- **Theming:** next-themes
+- **Testing:** Vitest
+- **Dev Tools:** ESLint, Prettier
 
 ## Testing
-
-The project uses [Vitest](https://vitest.dev) for testing:
 
 ```bash
 bun run test
@@ -117,19 +152,10 @@ bun run test
 
 Tests cover the `cn()` utility and the toast notification hooks.
 
-## Built With
-
-- **Framework:** Next.js 15 (with Turbopack)
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS, shadcn/ui, Catppuccin theme (Latte light & Mocha dark)
-- **AI:** GenKit, Google Gemini 2.0 Flash
-- **Forms:** react-hook-form, Zod validation
-- **Animation:** Anime.js
-- **State/Storage:** React State, Browser LocalStorage
-- **Testing:** Vitest
-- **Dev Tools:** GenKit CLI, ESLint, Prettier
-
 ## Feedback
 
-Have feedback or suggestions?  
-Feel free to [open an issue](https://github.com/GaseousIce/Fridge-Feast/issues) or start a [discussion](https://github.com/GaseousIce/Fridge-Feast/discussions) on GitHub!
+Have feedback or suggestions? [Open an issue](https://github.com/GaseousIce/Fridge-Feast/issues) or start a [discussion](https://github.com/GaseousIce/Fridge-Feast/discussions) on GitHub.
+
+## License
+
+[MIT](/LICENSE)

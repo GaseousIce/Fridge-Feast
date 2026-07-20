@@ -9,7 +9,7 @@ export default function Home() {
           className="animate-fade-in-up stagger-delay"
           style={{ "--i": 0 } as React.CSSProperties}
         >
-          <FridgeFeastLogo className="mb-3 h-10 w-10 text-primary sm:mb-4 sm:h-14 sm:w-14" />
+          <FridgeFeastLogo className="mb-3 h-10 w-10 sm:mb-4 sm:h-14 sm:w-14" />
         </div>
         <h1
           className="text-[clamp(2rem,8vw,3.5rem)] font-bold tracking-tight text-balance text-primary leading-[1.1] animate-fade-in-up stagger-delay"
