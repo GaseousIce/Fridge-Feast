@@ -63,13 +63,17 @@ export default function RecipeDetailPage({ params }: { params: Promise<{ id: str
   return (
     <div className="mx-auto max-w-2xl">
       <div
-        className="mb-4 flex animate-fade-in-up stagger-delay"
+        className="mb-3 sm:mb-4 flex animate-fade-in-up stagger-delay"
         style={{ "--i": 0 } as React.CSSProperties}
       >
-        <Button variant="ghost" asChild className="-ml-1 text-muted-foreground">
+        <Button
+          variant="ghost"
+          asChild
+          className="-ml-1 sm:-ml-1 text-muted-foreground touch-target"
+        >
           <Link href="/recipes">
             <ArrowLeft className="mr-1 h-4 w-4" />
-            Back to My Recipes
+            <span className="sm:inline">Back to My Recipes</span>
           </Link>
         </Button>
       </div>

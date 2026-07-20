@@ -26,9 +26,9 @@ export function RecipeResultCard({
 }: RecipeResultCardProps) {
   return (
     <Card className={cn("shadow-lg animate-fade-in-up", className)} style={style}>
-      <CardHeader className="space-y-3">
-        <div className="flex items-start justify-between gap-4">
-          <h2 className="text-2xl font-bold tracking-tight text-balance break-words">
+      <CardHeader className="space-y-3 p-4 sm:p-6">
+        <div className="flex items-start justify-between gap-3">
+          <h2 className="text-xl font-bold tracking-tight text-balance break-words sm:text-2xl">
             {recipe.recipeName || "Untitled Recipe"}
           </h2>
           <Button
@@ -47,7 +47,7 @@ export function RecipeResultCard({
         </div>
         <div className="flex flex-wrap gap-2">
           {recipe.cookTime && (
-            <Badge className="bg-accent text-accent-foreground border-transparent flex items-center gap-1">
+            <Badge className="bg-accent text-accent-foreground border-transparent flex items-center gap-1 py-1">
               <Clock className="h-3 w-3" />
               <span className="break-words">{recipe.cookTime}</span>
             </Badge>
@@ -55,7 +55,7 @@ export function RecipeResultCard({
           {typeof recipe.servings === "number" &&
             recipe.servings > 0 &&
             !isNaN(recipe.servings) && (
-              <Badge variant="secondary" className="flex items-center gap-1">
+              <Badge variant="secondary" className="flex items-center gap-1 py-1">
                 <Users className="h-3 w-3" />
                 <span>
                   {recipe.servings} {recipe.servings === 1 ? "serving" : "servings"}
@@ -64,7 +64,7 @@ export function RecipeResultCard({
             )}
         </div>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-6 p-4 pt-0 sm:p-6 sm:pt-0">
         {Array.isArray(recipe.ingredients) && recipe.ingredients.length > 0 && (
           <section>
             <h3 className="mb-2 flex items-center gap-1.5 text-lg font-semibold">
