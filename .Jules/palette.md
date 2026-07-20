@@ -1,3 +1,0 @@
-## 2025-07-04 - Screen Reader Announcements for Dynamic Content
-**Learning:** When displaying long, dynamically generated text blocks (like a multi-paragraph recipe), wrapping the entire content in `aria-live` can result in a disruptive user experience because the screen reader will abruptly read out the entire long text. It's much better UX to use a polite `aria-live` region purely to communicate the high-level status changes (e.g. "Generating recipe...", "Recipe generated successfully"), allowing the user to navigate the new content at their own pace using standard reading controls.
-**Action:** Use a dedicated, hidden `aria-live="polite"` element for status updates and avoid placing `aria-live` on large text elements directly.
