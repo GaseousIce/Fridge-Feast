@@ -52,33 +52,40 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div
-      className="flex min-h-screen flex-col bg-background text-foreground"
+      className="flex min-h-screen flex-col bg-background text-foreground overscroll-none"
       style={{
         transform: "translateZ(0)",
         backfaceVisibility: "hidden",
         perspective: "1000px",
       }}
     >
-      <header className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-sm">
-        <div className="mx-auto flex h-14 max-w-5xl items-center gap-4 px-4 sm:px-6">
+      <header
+        className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-sm"
+        style={{ paddingTop: "var(--safe-area-top)" }}
+      >
+        <div className="mx-auto flex h-14 max-w-5xl items-center gap-2 px-3 sm:px-6">
           <Link
             href="/"
-            className="flex shrink-0 items-center gap-2 text-primary transition-opacity hover:opacity-80"
+            className="flex shrink-0 items-center gap-2 text-primary transition-opacity hover:opacity-80 active:opacity-70"
           >
             <FridgeFeastLogo className="h-7 w-7" />
             <span className="hidden font-bold tracking-tight sm:inline">Fridge Feast</span>
           </Link>
 
           {/* Sliding pill nav */}
-          <nav ref={navRef} className="relative flex flex-1 items-center justify-center gap-1">
+          <nav
+            ref={navRef}
+            className="relative flex flex-1 items-center justify-center gap-0.5 sm:gap-1"
+          >
             {/* The shared sliding background pill */}
             {activeIndex !== -1 && (
               <span
                 aria-hidden="true"
-                className="nav-pill pointer-events-none absolute inset-y-0 my-auto h-[32px] rounded-md bg-primary/10"
+                className="nav-pill pointer-events-none absolute inset-y-1 my-auto rounded-md bg-primary/10"
                 style={{
                   left: pill.left,
                   width: pill.width,
+                  height: "36px",
                   transition: pill.ready
                     ? "left 0.3s cubic-bezier(0.16, 1, 0.3, 1), width 0.3s cubic-bezier(0.16, 1, 0.3, 1)"
                     : "none",
@@ -99,10 +106,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   style={{ "--i": linkIndex } as React.CSSProperties}
                   className={[
                     "nav-link",
-                    "group relative z-10 flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium",
+                    "touch-target",
+                    "group relative z-10 flex items-center justify-center gap-1.5 rounded-md px-2.5 py-2 sm:px-3 sm:py-1.5 text-sm font-medium",
                     "transition-colors duration-200 ease-out-quart",
                     "outline-none",
                     "focus-visible:ring-2 focus-visible:ring-primary/70 focus-visible:ring-offset-1 focus-visible:ring-offset-background",
+                    "active:scale-95 active:transition-transform active:duration-100",
                     isActive ? "text-primary" : "text-muted-foreground hover:text-foreground",
                   ].join(" ")}
                 >
@@ -125,9 +134,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </div>
       </header>
 
-      <main className="flex-1 px-4 py-6 sm:px-6 sm:py-8">{children}</main>
+      <main
+        className="flex-1 px-4 py-6 sm:px-6 sm:py-8"
+        style={{ paddingBottom: "calc(1.5rem + var(--safe-area-bottom))" }}
+      >
+        {children}
+      </main>
 
-      <footer className="border-t border-border py-4 text-center text-xs text-muted-foreground">
+      <footer
+        className="border-t border-border py-4 text-center text-xs text-muted-foreground"
+        style={{ paddingBottom: "calc(1rem + var(--safe-area-bottom))" }}
+      >
         <p>&copy; {new Date().getFullYear()} Fridge Feast</p>
       </footer>
     </div>

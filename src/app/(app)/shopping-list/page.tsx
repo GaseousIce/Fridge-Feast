@@ -124,10 +124,10 @@ export default function ShoppingListPage() {
 
   return (
     <div className="mx-auto max-w-3xl">
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-4 flex items-start justify-between gap-3 sm:mb-6 sm:items-center">
         <div>
           <h2
-            className="text-2xl font-bold tracking-tight text-balance animate-fade-in-up stagger-delay"
+            className="text-xl font-bold tracking-tight text-balance sm:text-2xl animate-fade-in-up stagger-delay"
             style={{ "--i": 0 } as React.CSSProperties}
           >
             Shopping List
@@ -144,7 +144,7 @@ export default function ShoppingListPage() {
           size="sm"
           onClick={handleClearChecked}
           disabled={!shoppingItems.some((shoppingItem) => shoppingItem.checked)}
-          className="animate-fade-in-up stagger-delay"
+          className="shrink-0 animate-fade-in-up stagger-delay min-h-[36px]"
           style={{ "--i": 2 } as React.CSSProperties}
         >
           <Trash2 className="mr-1 h-3 w-3" />
@@ -152,15 +152,15 @@ export default function ShoppingListPage() {
         </Button>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3 sm:space-y-4">
         {grouped.map(([recipeId, { recipeName, items }], index) => (
           <Card
             key={recipeId}
             className="shadow-none border border-border animate-fade-in-up stagger-delay"
             style={{ "--i": index + 3 } as React.CSSProperties}
           >
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base font-medium">
+            <CardHeader className="pb-2 px-3 sm:px-6 pt-3 sm:pt-6">
+              <CardTitle className="text-sm sm:text-base font-medium">
                 <Link
                   href={`/recipes/${recipeId}`}
                   className="hover:text-primary transition-colors"
@@ -169,12 +169,12 @@ export default function ShoppingListPage() {
                 </Link>
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <ul className="space-y-1">
+            <CardContent className="px-3 pb-3 sm:px-6 sm:pb-6">
+              <ul className="space-y-0.5 sm:space-y-1">
                 {items.map((item) => (
                   <li key={item.id}>
                     <label
-                      className={`flex cursor-pointer items-center gap-3 rounded-md px-2 py-2.5 text-sm transition-all duration-200 hover:bg-secondary/40 ${
+                      className={`flex cursor-pointer items-center gap-3 rounded-md px-2 py-3 sm:py-2.5 text-sm transition-all duration-200 hover:bg-secondary/40 active:bg-secondary/60 touch-target ${
                         item.checked
                           ? "text-muted-foreground line-through opacity-70"
                           : "text-foreground"
@@ -183,8 +183,9 @@ export default function ShoppingListPage() {
                       <Checkbox
                         checked={item.checked}
                         onCheckedChange={() => toggleShoppingItem(item.id)}
+                        className="h-5 w-5 sm:h-4 sm:w-4"
                       />
-                      {item.label}
+                      <span className="break-words">{item.label}</span>
                     </label>
                   </li>
                 ))}

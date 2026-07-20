@@ -59,7 +59,7 @@ export default function MyRecipesPage() {
   return (
     <div className="mx-auto max-w-3xl">
       <h2
-        className="mb-6 text-2xl font-bold tracking-tight text-balance animate-fade-in-up stagger-delay"
+        className="mb-4 text-xl font-bold tracking-tight text-balance sm:mb-6 sm:text-2xl animate-fade-in-up stagger-delay"
         style={{ "--i": 0 } as React.CSSProperties}
       >
         My Recipes
@@ -71,22 +71,22 @@ export default function MyRecipesPage() {
             className="relative overflow-hidden border border-border shadow-sm transition-all duration-300 hover:shadow-md hover:bg-secondary/20 hover:border-border/80 group animate-fade-in-up stagger-delay"
             style={{ "--i": index + 1 } as React.CSSProperties}
           >
-            <div className="flex items-center gap-4 p-4 sm:p-6">
-              <div className="flex min-w-0 flex-1 flex-col gap-2">
+            <div className="flex items-center gap-3 p-3 sm:p-6">
+              <div className="flex min-w-0 flex-1 flex-col gap-1.5 sm:gap-2">
                 <Link
                   href={`/recipes/${recipe.id}`}
-                  className="text-lg font-semibold text-foreground hover:text-primary transition-colors truncate after:absolute after:inset-0 after:z-0 after:content-['']"
+                  className="text-base sm:text-lg font-semibold text-foreground hover:text-primary transition-colors truncate after:absolute after:inset-0 after:z-0 after:content-['']"
                 >
                   {recipe.recipeName || "Untitled Recipe"}
                 </Link>
-                <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                <div className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
                   {recipe.cookTime && (
-                    <Badge className="bg-accent text-accent-foreground border-transparent flex items-center gap-1 text-[10px] py-0.5 px-2">
+                    <Badge className="bg-accent text-accent-foreground border-transparent flex items-center gap-1 text-[11px] py-0.5 px-2">
                       <Clock className="h-3 w-3" />
                       <span className="break-words">{recipe.cookTime}</span>
                     </Badge>
                   )}
-                  <span>
+                  <span className="text-[11px] sm:text-xs">
                     {Array.isArray(recipe.ingredients) ? recipe.ingredients.length : 0} ingredients
                   </span>
                   {recipe.savedAt &&
@@ -98,15 +98,17 @@ export default function MyRecipesPage() {
                           <span className="select-none text-muted-foreground/50" aria-hidden="true">
                             •
                           </span>
-                          <span>Saved {savedAtDate.toLocaleDateString()}</span>
+                          <span className="text-[11px] sm:text-xs">
+                            Saved {savedAtDate.toLocaleDateString()}
+                          </span>
                         </>
                       );
                     })()}
                 </div>
               </div>
 
-              <div className="flex shrink-0 items-center gap-1">
-                <div className="relative z-10 pointer-events-none flex h-10 w-10 items-center justify-center text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300 ease-out-quart">
+              <div className="flex shrink-0 items-center gap-0.5">
+                <div className="relative z-10 pointer-events-none hidden sm:flex h-10 w-10 items-center justify-center text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300 ease-out-quart">
                   <ArrowRight className="h-5 w-5" />
                 </div>
                 <Button
@@ -114,7 +116,7 @@ export default function MyRecipesPage() {
                   size="icon"
                   onClick={() => handleDelete(recipe.id, recipe.recipeName)}
                   aria-label="Delete recipe"
-                  className="relative z-10 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+                  className="relative z-10 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors touch-target"
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>

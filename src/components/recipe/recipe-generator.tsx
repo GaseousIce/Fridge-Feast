@@ -160,24 +160,24 @@ export function RecipeGenerator() {
   }, [recipe, getValues, saveRecipe, addShoppingItems, deleteRecipe, recipes, toast]);
 
   return (
-    <div className="w-full max-w-2xl space-y-8">
+    <div className="w-full max-w-2xl space-y-6 sm:space-y-8">
       <Card className="shadow-lg">
-        <CardHeader>
-          <CardTitle className="text-2xl">What&apos;s in your fridge?</CardTitle>
-          <CardDescription>
+        <CardHeader className="p-4 sm:p-6">
+          <CardTitle className="text-xl sm:text-2xl">What&apos;s in your fridge?</CardTitle>
+          <CardDescription className="text-sm sm:text-base">
             List your available ingredients, separated by commas, and let our AI chef whip up a
             recipe for you!
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
               <FormField
                 control={form.control}
                 name="ingredients"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="ingredients-input" className="text-lg">
+                    <FormLabel htmlFor="ingredients-input" className="text-base sm:text-lg">
                       Ingredients{" "}
                       <span className="text-destructive" aria-hidden="true">
                         *
@@ -202,24 +202,34 @@ export function RecipeGenerator() {
                 name="dietaryRestrictions"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-lg">Dietary Restrictions (Optional)</FormLabel>
+                    <FormLabel className="text-base sm:text-lg">
+                      Dietary Restrictions (Optional)
+                    </FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., vegetarian, gluten-free" {...field} />
+                      <Input
+                        placeholder="e.g., vegetarian, gluten-free"
+                        className="h-11 sm:h-10"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
                 <FormField
                   control={form.control}
                   name="cuisine"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-lg">Cuisine (Optional)</FormLabel>
+                      <FormLabel className="text-base sm:text-lg">Cuisine (Optional)</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g., Italian, Mexican" {...field} />
+                        <Input
+                          placeholder="e.g., Italian, Mexican"
+                          className="h-11 sm:h-10"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -231,10 +241,10 @@ export function RecipeGenerator() {
                   name="difficulty"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-lg">Difficulty (Optional)</FormLabel>
+                      <FormLabel className="text-base sm:text-lg">Difficulty (Optional)</FormLabel>
                       <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger className="h-11 sm:h-10">
                             <SelectValue placeholder="Select difficulty" />
                           </SelectTrigger>
                         </FormControl>
@@ -261,7 +271,11 @@ export function RecipeGenerator() {
                 </Alert>
               )}
 
-              <Button type="submit" className="w-full group" disabled={isLoading || isOffline}>
+              <Button
+                type="submit"
+                className="w-full min-h-[44px] group active:scale-[0.98] transition-transform duration-100"
+                disabled={isLoading || isOffline}
+              >
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
