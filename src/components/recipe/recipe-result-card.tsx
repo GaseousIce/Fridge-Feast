@@ -9,7 +9,6 @@ import type { GenerateRecipeOutput } from "@/ai/flows/generate-recipe";
 
 interface RecipeResultCardProps {
   recipe: GenerateRecipeOutput;
-  inputIngredients: string;
   isSaved: boolean;
   onSave: () => void;
   className?: string;
@@ -18,7 +17,6 @@ interface RecipeResultCardProps {
 
 export function RecipeResultCard({
   recipe,
-  inputIngredients,
   isSaved,
   onSave,
   className,

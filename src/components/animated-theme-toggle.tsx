@@ -1,14 +1,14 @@
 "use client";
 
-import * as React from "react";
+import { useRef, useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
 import { flushSync } from "react-dom";
 
 export function AnimatedThemeToggle() {
   const { setTheme, resolvedTheme } = useTheme();
-  const buttonRef = React.useRef<HTMLButtonElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
-  const mounted = React.useSyncExternalStore(
+  const mounted = useSyncExternalStore(
     () => () => {},
     () => true,
     () => false,

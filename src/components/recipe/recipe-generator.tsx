@@ -385,12 +385,7 @@ export function RecipeGenerator() {
       )}
 
       {recipe && !isLoading && (
-        <RecipeResultCard
-          recipe={recipe}
-          inputIngredients={getValues("ingredients")}
-          isSaved={isSaved}
-          onSave={handleSave}
-        />
+        <RecipeResultCard recipe={recipe} isSaved={isSaved} onSave={handleSave} />
       )}
     </div>
   );
