@@ -2,7 +2,7 @@
   "name": "nextn",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "bun@1.4.2",
+  "packageManager": "bun@1.4.3",
   "scripts": {
     "dev": "next dev --turbopack -p 9002",
     "build": "next build",
@@ -21,7 +21,7 @@
     "@radix-ui/react-toast": "^1.2.24",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "lucide-react": "^1.54.0",
+    "lucide-react": "^1.55.0",
     "next": "^16.4.0",
     "next-themes": "^0.4.6",
     "openai": "^7.32.0",
@@ -39,7 +39,7 @@
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.4.0",
     "postcss": "^8.5.29",
-    "prettier": "^3.9.9",
+    "prettier": "^3.9.10",
     "tailwindcss": "^3.4.19",
     "typescript": "^5.9.3",
     "vitest": "^4.1.11"
